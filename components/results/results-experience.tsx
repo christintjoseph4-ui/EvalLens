@@ -19,6 +19,7 @@ import {
   ZoomIn,
   ZoomOut
 } from "lucide-react";
+import { buildCompactAskContext, sanitizeForAskPaper } from "@/lib/openai/ask-context";
 import type { AnalysisQuestion, AnalysisResult, EvaluationClassification } from "@/types/analysis";
 
 type AskResponse = {
@@ -482,7 +483,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
             <p className="mt-2 leading-7 text-[#2b3340]">{getModeSummary(selectedQuestion, mode)}</p>
           </div>
 
-          <AskMyPaper key={selectedQuestion.id} question={selectedQuestion} />
+          <AskMyPaper key={selectedQuestion.id} analysis={analysis} question={selectedQuestion} />
             </motion.div>
           </AnimatePresence>
         </aside>
@@ -491,7 +492,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
   );
 }
 
-function AskMyPaper({ question }: { question: AnalysisQuestion }) {
+function AskMyPaper({ analysis, question }: { analysis: AnalysisResult; question: AnalysisQuestion }) {
   const [prompt, setPrompt] = useState(defaultPrompt);
   const [response, setResponse] = useState<AskResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -507,17 +508,23 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
       const result = await fetch("/api/ask-paper", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId: question.id, prompt: nextPrompt, question })
+        body: JSON.stringify({
+          analysisId: analysis.analysisId,
+          question: nextPrompt,
+          questionId: question.id,
+          analysisContext: sanitizeForAskPaper(buildCompactAskContext(analysis, nextPrompt, question.id))
+        })
       });
 
       if (!result.ok) {
-        throw new Error("Unable to answer from paper context.");
+        const payload = (await result.json().catch(() => null)) as { error?: { message?: string } } | null;
+        throw new Error(payload?.error?.message ?? "Unable to answer from paper context.");
       }
 
       const payload = (await result.json()) as { response: AskResponse };
       setResponse(payload.response);
-    } catch {
-      setError("I couldn't answer that clearly from this question yet.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "I couldn't answer that clearly from this question yet.");
     } finally {
       setIsLoading(false);
     }
@@ -573,9 +580,7 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
       </div>
       {isLoading ? <p className="mt-4 text-sm text-[#666d78]">Reading this answer carefully...</p> : null}
       {error ? (
-        <p className="mt-4 text-sm text-[#7a4e43]">
-          I couldn&apos;t answer that clearly from this question yet. Try one of the prompts above.
-        </p>
+        <p className="mt-4 text-sm text-[#7a4e43]">{error}</p>
       ) : null}
       {response ? (
         <motion.div

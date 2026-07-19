@@ -2,12 +2,18 @@ export const supportedMimeTypes = new Set([
   "application/pdf",
   "image/jpeg",
   "image/jpg",
-  "image/png"
+  "image/png",
+  "image/webp"
 ]);
 
-export const supportedExtensions = ["pdf", "jpg", "jpeg", "png"];
+export const supportedExtensions = ["pdf", "jpg", "jpeg", "png", "webp"];
 
-export const maxUploadFileSizeBytes = 8 * 1024 * 1024;
+function readMaxUploadMb() {
+  const configured = Number(process.env.MAX_UPLOAD_MB);
+  return Number.isFinite(configured) && configured > 0 ? configured : 20;
+}
+
+export const maxUploadFileSizeBytes = readMaxUploadMb() * 1024 * 1024;
 
 export const maxUploadPageCount = 20;
 

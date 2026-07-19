@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
-import { ArrowRight, CalendarDays, FileText, Shield, Sparkles, Target, UploadCloud } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, CalendarDays, FileText, Shield, Sparkles, Target } from "lucide-react";
+import { FileUploadCard } from "@/components/upload/file-upload-card";
 import {
   bytesToMegabytes,
   formatSupportedUploadTypes,
@@ -17,18 +18,23 @@ import type { AnalysisResult } from "@/types/analysis";
 type UploadSlot = "questionPaper" | "evaluatedPaper" | "answerKey" | "markingScheme";
 
 type UploadState = Record<UploadSlot, File | null>;
+type PreviewState = Record<UploadSlot, string | null>;
+type UploadErrors = Record<UploadSlot, string>;
 
 type AnalyseResponse =
   | {
       success: true;
       mode: "live";
       analysis: AnalysisResult;
+      askContextSeed?: unknown;
     }
   | {
       success: false;
       error: {
         code: string;
         message: string;
+        retryable?: boolean;
+        requestId?: string;
       };
       sampleAvailable: boolean;
     };
@@ -38,6 +44,20 @@ const initialUploads: UploadState = {
   evaluatedPaper: null,
   answerKey: null,
   markingScheme: null
+};
+
+const initialPreviews: PreviewState = {
+  questionPaper: null,
+  evaluatedPaper: null,
+  answerKey: null,
+  markingScheme: null
+};
+
+const initialUploadErrors: UploadErrors = {
+  questionPaper: "",
+  evaluatedPaper: "",
+  answerKey: "",
+  markingScheme: ""
 };
 
 const slots: Array<{
@@ -73,47 +93,23 @@ const slots: Array<{
 ];
 
 const processingMessages = [
-  "Reading your paper...",
-  "Understanding your teacher's notes...",
-  "Finding the most useful insights...",
-  "Preparing your next step..."
+  "Preparing documents...",
+  "Reading the question paper...",
+  "Understanding the evaluated answers...",
+  "Building your improvement plan..."
 ];
 
 function isSupportedFile(file: File) {
   return isSupportedFileName(file.name) && (!file.type || isSupportedUploadType(file.type));
 }
 
-function readImageDataUrl(file: File | null) {
-  if (!file || !file.type.startsWith("image/")) {
-    return Promise.resolve<string | null>(null);
-  }
-
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () => reject(new Error("Could not read image preview."));
-    reader.readAsDataURL(file);
-  });
-}
-
-function attachSessionPreview(analysis: AnalysisResult, previewUrl: string | null) {
-  if (!previewUrl) {
-    return analysis;
-  }
-
-  return {
-    ...analysis,
-    questions: analysis.questions.map((question) => ({
-      ...question,
-      paperPageImage:
-        question.paperPageImage === "live-upload-preview" ? previewUrl : question.paperPageImage
-    }))
-  };
-}
-
 export function UploadExperience() {
   const router = useRouter();
+  const inFlightRef = useRef(false);
+  const previewUrlsRef = useRef<PreviewState>(initialPreviews);
   const [uploads, setUploads] = useState<UploadState>(initialUploads);
+  const [previewUrls, setPreviewUrls] = useState<PreviewState>(initialPreviews);
+  const [uploadErrors, setUploadErrors] = useState<UploadErrors>(initialUploadErrors);
   const [targetScore, setTargetScore] = useState("35");
   const [examDate, setExamDate] = useState("");
   const [subject, setSubject] = useState("Physics");
@@ -121,16 +117,71 @@ export function UploadExperience() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const acceptedFormats = useMemo(() => formatSupportedUploadTypes(), []);
+  const acceptValue = ".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp";
+
+  useEffect(() => {
+    return () => {
+      Object.values(previewUrlsRef.current).forEach((url) => {
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, []);
+
+  function setSlotError(slot: UploadSlot, message: string) {
+    setUploadErrors((current) => ({
+      ...current,
+      [slot]: message
+    }));
+  }
+
+  function revokePreview(slot: UploadSlot) {
+    const existing = previewUrlsRef.current[slot];
+    if (existing) {
+      URL.revokeObjectURL(existing);
+    }
+    previewUrlsRef.current = {
+      ...previewUrlsRef.current,
+      [slot]: null
+    };
+    setPreviewUrls((current) => ({
+      ...current,
+      [slot]: null
+    }));
+  }
+
+  function removeFile(slot: UploadSlot) {
+    setError("");
+    setSlotError(slot, "");
+    revokePreview(slot);
+    setUploads((current) => ({
+      ...current,
+      [slot]: null
+    }));
+  }
 
   function updateFile(slot: UploadSlot, file: File | null) {
     setError("");
-    if (file && !isSupportedFile(file)) {
-      setError(`This file type is hard for EvalLens to read right now. Please use ${acceptedFormats}.`);
+    setSlotError(slot, "");
+    if (!file) {
+      removeFile(slot);
       return;
     }
 
-    if (file && file.size > maxUploadFileSizeBytes) {
-      setError(
+    if (file && !isSupportedFile(file)) {
+      setSlotError(slot, `This file type is hard for EvalLens to read right now. Please use ${acceptedFormats}.`);
+      return;
+    }
+
+    if (file.size <= 0) {
+      setSlotError(slot, "This file looks empty. Please choose the file again.");
+      return;
+    }
+
+    if (file.size > maxUploadFileSizeBytes) {
+      setSlotError(
+        slot,
         `This file is ${bytesToMegabytes(file.size)} MB. Please choose a file under ${bytesToMegabytes(
           maxUploadFileSizeBytes
         )} MB so we can read it smoothly.`
@@ -138,14 +189,30 @@ export function UploadExperience() {
       return;
     }
 
-    setUploads((current) => ({
-      ...current,
-      [slot]: file
-    }));
+    let nextPreviewUrl: string | null = null;
+    if (file.type.startsWith("image/")) {
+      try {
+        nextPreviewUrl = URL.createObjectURL(file);
+      } catch {
+        setSlotError(slot, "We couldn't create a preview for this image. Please choose the file again.");
+        return;
+      }
+    }
+
+    const previousPreviewUrl = previewUrlsRef.current[slot];
+    previewUrlsRef.current = {
+      ...previewUrlsRef.current,
+      [slot]: nextPreviewUrl
+    };
+    setUploads((current) => ({ ...current, [slot]: file }));
+    setPreviewUrls((current) => ({ ...current, [slot]: nextPreviewUrl }));
+    if (previousPreviewUrl) {
+      URL.revokeObjectURL(previousPreviewUrl);
+    }
   }
 
   async function createPlan() {
-    if (isProcessing) {
+    if (inFlightRef.current || isProcessing) {
       return;
     }
 
@@ -161,6 +228,7 @@ export function UploadExperience() {
     }
 
     setError("");
+    inFlightRef.current = true;
     setIsProcessing(true);
 
     const controller = new AbortController();
@@ -169,7 +237,7 @@ export function UploadExperience() {
     try {
       const formData = new FormData();
       formData.set("questionPaper", uploads.questionPaper);
-      formData.set("evaluatedPaper", uploads.evaluatedPaper);
+      formData.set("evaluatedAnswerPaper", uploads.evaluatedPaper);
       if (uploads.answerKey) {
         formData.set("answerKey", uploads.answerKey);
       }
@@ -186,7 +254,7 @@ export function UploadExperience() {
         formData.set("subject", subject.trim());
       }
 
-      const result = await fetch("/api/analyse", {
+      const result = await fetch("/api/analyze", {
         method: "POST",
         body: formData,
         signal: controller.signal
@@ -204,8 +272,7 @@ export function UploadExperience() {
         return;
       }
 
-      const previewUrl = await readImageDataUrl(uploads.evaluatedPaper);
-      const sessionAnalysis = attachSessionPreview(validated.data, previewUrl);
+      const sessionAnalysis = validated.data;
       window.sessionStorage.setItem(
         `evallens:analysis:${sessionAnalysis.analysisId}`,
         JSON.stringify(sessionAnalysis)
@@ -215,6 +282,7 @@ export function UploadExperience() {
       setError("We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now.");
     } finally {
       window.clearTimeout(timeoutId);
+      inFlightRef.current = false;
       setIsProcessing(false);
     }
   }
@@ -282,7 +350,8 @@ export function UploadExperience() {
           <div className="mt-8 flex max-w-xl gap-3 rounded-[24px] border premium-hairline bg-white/62 p-5 text-sm leading-6 text-[#5f6671]">
             <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={17} aria-hidden />
             <p>
-              Keep anything private out of the upload if it is not needed for understanding the paper.
+              Your documents are used only to generate this analysis. Avoid uploading papers
+              containing unnecessary personal information.
             </p>
           </div>
         </div>
@@ -290,39 +359,19 @@ export function UploadExperience() {
         <div className="soft-enter">
           <div className="grid gap-4 md:grid-cols-2">
             {slots.map((slot) => (
-              <label
-                className={`focus-within:ring-2 focus-within:ring-[#6d73d9]/35 rounded-[28px] border premium-hairline bg-white/70 p-6 transition hover:bg-white/90 ${
-                  slot.required ? "md:min-h-64" : "md:min-h-44"
-                }`}
+              <FileUploadCard
                 key={slot.id}
-              >
-                <span className="flex items-center justify-between gap-3">
-                  <span className="text-base font-medium">{slot.label}</span>
-                  {slot.required ? (
-                    <span className="text-xs uppercase tracking-[0.12em] text-[#6d73d9]">
-                      Needed
-                    </span>
-                  ) : null}
-                </span>
-                <span className="mt-3 block text-sm leading-6 text-[#666d78]">{slot.helper}</span>
-                <span
-                  className={`mt-6 flex flex-col items-center justify-center rounded-[26px] border border-dashed border-[#ccd3df] bg-[#f8f9fc] px-4 py-6 text-center ${
-                    slot.required ? "min-h-32" : "min-h-20"
-                  }`}
-                >
-                  <UploadCloud size={22} className="text-[#102a56]" aria-hidden />
-                  <span className="mt-3 max-w-full truncate text-sm text-[#2b3340]">
-                    {uploads[slot.id]?.name ?? "Choose a file"}
-                  </span>
-                </span>
-                <input
-                  className="sr-only"
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
-                  aria-label={slot.label}
-                  onChange={(event) => updateFile(slot.id, event.target.files?.[0] ?? null)}
-                />
-              </label>
+                id={slot.id}
+                label={slot.label}
+                helper={slot.helper}
+                required={slot.required}
+                file={uploads[slot.id]}
+                previewUrl={previewUrls[slot.id]}
+                error={uploadErrors[slot.id]}
+                accept={acceptValue}
+                onSelect={(file) => updateFile(slot.id, file)}
+                onRemove={() => removeFile(slot.id)}
+              />
             ))}
           </div>
 
@@ -364,9 +413,16 @@ export function UploadExperience() {
           </div>
 
           {error ? (
-            <p className="mt-4 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
-              {error}
-            </p>
+            <div className="mt-4 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
+              <p>{error}</p>
+              <button
+                className="focus-ring mt-3 rounded-full bg-white/70 px-3 py-1.5 text-xs font-medium text-[#102a56] transition hover:bg-white"
+                type="button"
+                onClick={() => void createPlan()}
+              >
+                Retry
+              </button>
+            </div>
           ) : null}
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
