@@ -222,16 +222,16 @@ export function UploadExperience() {
   if (isProcessing) {
     return (
       <main className="flex min-h-screen items-center justify-center px-5 py-10">
-        <section className="glass paper-shadow w-full max-w-2xl rounded-[36px] p-8 text-center sm:p-10">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
-            <Sparkles size={22} aria-hidden />
+        <section className="glass paper-shadow w-full max-w-2xl rounded-[34px] p-8 text-center sm:p-10">
+          <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
+            <Sparkles size={20} aria-hidden />
           </span>
           <p className="mt-5 text-sm font-medium text-[#102a56]">You&apos;ve already done the hard part.</p>
-          <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Understanding your answers...</h1>
-          <div className="mt-9 space-y-3 text-left" role="status" aria-live="polite">
+          <h1 className="mt-4 text-balance text-4xl font-medium leading-tight sm:text-5xl">Understanding your answers...</h1>
+          <div className="mt-10 space-y-3 text-left" role="status" aria-live="polite">
             {processingMessages.map((message, index) => (
               <div
-                className="flex items-center gap-3 rounded-[22px] border premium-hairline bg-white/70 px-4 py-3"
+                className="flex items-center gap-3 rounded-[20px] border premium-hairline bg-white/70 px-4 py-3.5"
                 key={message}
               >
                 <span
@@ -261,7 +261,7 @@ export function UploadExperience() {
   return (
     <main className="min-h-screen px-5 py-6 sm:px-8 lg:px-12">
       <nav className="mx-auto flex max-w-6xl items-center justify-between py-3">
-        <Link className="focus-ring rounded-full text-lg font-semibold" href="/">
+        <Link className="focus-ring rounded-full text-lg font-medium" href="/">
           EvalLens AI
         </Link>
         <Link className="focus-ring rounded-full text-sm text-[#102a56]" href="/sample">
@@ -269,18 +269,18 @@ export function UploadExperience() {
         </Link>
       </nav>
 
-      <section className="mx-auto grid max-w-6xl gap-10 py-12 lg:grid-cols-[0.82fr_1.18fr]">
-        <div className="lg:pt-8">
+      <section className="mx-auto grid max-w-6xl gap-14 py-16 lg:grid-cols-[0.82fr_1.18fr]">
+        <div className="lg:pt-10">
           <p className="text-sm font-medium text-[#6d73d9]">Let&apos;s understand your paper</p>
-          <h1 className="mt-4 text-balance text-5xl font-semibold leading-[1.02] sm:text-6xl">
+          <h1 className="mt-5 text-balance text-4xl font-medium leading-[1.05] sm:text-5xl">
             Your paper can show you what to do next.
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-[#5f6671]">
+          <p className="mt-7 max-w-xl text-base leading-8 text-[#5f6671]">
             Add the paper and the teacher-marked answer sheet. We&apos;ll help you find the
             small changes that can make the biggest difference.
           </p>
-          <div className="mt-7 flex max-w-xl gap-3 rounded-[26px] border premium-hairline bg-white/62 p-4 text-sm leading-6 text-[#5f6671]">
-            <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={18} aria-hidden />
+          <div className="mt-8 flex max-w-xl gap-3 rounded-[24px] border premium-hairline bg-white/62 p-5 text-sm leading-6 text-[#5f6671]">
+            <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={17} aria-hidden />
             <p>
               Keep anything private out of the upload if it is not needed for understanding the paper.
             </p>
@@ -291,26 +291,26 @@ export function UploadExperience() {
           <div className="grid gap-4 md:grid-cols-2">
             {slots.map((slot) => (
               <label
-                className={`focus-within:ring-2 focus-within:ring-[#6d73d9]/35 rounded-[30px] border premium-hairline bg-white/70 p-5 transition hover:bg-white ${
+                className={`focus-within:ring-2 focus-within:ring-[#6d73d9]/35 rounded-[28px] border premium-hairline bg-white/70 p-6 transition hover:bg-white/90 ${
                   slot.required ? "md:min-h-64" : "md:min-h-44"
                 }`}
                 key={slot.id}
               >
                 <span className="flex items-center justify-between gap-3">
-                  <span className="text-lg font-semibold">{slot.label}</span>
+                  <span className="text-base font-medium">{slot.label}</span>
                   {slot.required ? (
                     <span className="text-xs uppercase tracking-[0.12em] text-[#6d73d9]">
                       Needed
                     </span>
                   ) : null}
                 </span>
-                <span className="mt-2 block text-sm text-[#666d78]">{slot.helper}</span>
+                <span className="mt-3 block text-sm leading-6 text-[#666d78]">{slot.helper}</span>
                 <span
                   className={`mt-6 flex flex-col items-center justify-center rounded-[26px] border border-dashed border-[#ccd3df] bg-[#f8f9fc] px-4 py-6 text-center ${
                     slot.required ? "min-h-32" : "min-h-20"
                   }`}
                 >
-                  <UploadCloud size={25} className="text-[#102a56]" aria-hidden />
+                  <UploadCloud size={22} className="text-[#102a56]" aria-hidden />
                   <span className="mt-3 max-w-full truncate text-sm text-[#2b3340]">
                     {uploads[slot.id]?.name ?? "Choose a file"}
                   </span>
@@ -327,8 +327,8 @@ export function UploadExperience() {
           </div>
 
           <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5 md:col-span-2">
-              <span className="text-lg font-semibold">Subject</span>
+            <label className="rounded-[28px] border premium-hairline bg-white/70 p-6 md:col-span-2">
+              <span className="text-base font-medium">Subject</span>
               <input
                 className="focus-ring mt-4 w-full rounded-2xl border premium-hairline bg-[#fffefb] px-4 py-3"
                 type="text"
@@ -336,9 +336,9 @@ export function UploadExperience() {
                 onChange={(event) => setSubject(event.target.value)}
               />
             </label>
-            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5">
-              <span className="flex items-center gap-2 text-lg font-semibold">
-                <Target size={18} aria-hidden />
+            <label className="rounded-[28px] border premium-hairline bg-white/70 p-6">
+              <span className="flex items-center gap-2 text-base font-medium">
+                <Target size={17} aria-hidden />
                 Goal for next time
               </span>
               <input
@@ -349,9 +349,9 @@ export function UploadExperience() {
                 onChange={(event) => setTargetScore(event.target.value)}
               />
             </label>
-            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5">
-              <span className="flex items-center gap-2 text-lg font-semibold">
-                <CalendarDays size={18} aria-hidden />
+            <label className="rounded-[28px] border premium-hairline bg-white/70 p-6">
+              <span className="flex items-center gap-2 text-base font-medium">
+                <CalendarDays size={17} aria-hidden />
                 Exam date
               </span>
               <input
@@ -371,20 +371,20 @@ export function UploadExperience() {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
-              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-6 py-3.5 font-medium text-white transition hover:bg-[#091b3d] disabled:cursor-not-allowed disabled:opacity-55"
+              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#091b3d] disabled:cursor-not-allowed disabled:opacity-55"
               type="button"
               disabled={isProcessing}
               onClick={() => void createPlan()}
             >
-              <FileText size={18} aria-hidden />
+              <FileText size={17} aria-hidden />
               {isProcessing ? "Preparing my next step" : "Help me find my next step"}
             </button>
             <Link
-              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-6 py-3.5 font-medium text-[#102a56] transition hover:bg-white"
+              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-5 py-3 text-sm font-medium text-[#102a56] transition hover:bg-white/90"
               href="/sample"
             >
               See a gentle example
-              <ArrowRight size={18} aria-hidden />
+              <ArrowRight size={17} aria-hidden />
             </Link>
           </div>
         </div>

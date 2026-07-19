@@ -46,11 +46,11 @@ export function LiveResultsLoader() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-5 py-10">
-      <section className="glass paper-shadow w-full max-w-xl rounded-[36px] p-8 text-center">
+      <section className="glass paper-shadow w-full max-w-xl rounded-[34px] p-8 text-center sm:p-10">
         <p className="text-sm font-medium text-[#6d73d9]">
           {status === "loading" ? "Opening your paper" : "We can't find that paper here"}
         </p>
-        <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">
+        <h1 className="mt-4 text-balance text-4xl font-medium leading-tight sm:text-5xl">
           {status === "loading" ? "Getting your next step ready" : "Let's use a prepared paper instead."}
         </h1>
         <p className="mt-4 leading-7 text-[#5f6671]">
@@ -58,7 +58,7 @@ export function LiveResultsLoader() {
           prepared paper for now.
         </p>
         <Link
-          className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
+          className="focus-ring mt-7 inline-flex rounded-full bg-[#102a56] px-5 py-3 text-sm font-medium text-white"
           href="/sample"
         >
           Understand a prepared paper

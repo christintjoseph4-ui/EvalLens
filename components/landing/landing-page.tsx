@@ -12,42 +12,42 @@ export function LandingPage() {
   return (
     <main className="min-h-screen px-5 py-6 text-[#111318] sm:px-8 lg:px-12">
       <nav className="mx-auto flex max-w-6xl items-center justify-between py-3">
-        <Link className="focus-ring rounded-full text-lg font-semibold" href="/">
+        <Link className="focus-ring rounded-full text-lg font-medium" href="/">
           EvalLens AI
         </Link>
         <Link
-          className="focus-ring hidden rounded-full border premium-hairline bg-white/64 px-4 py-2 text-sm text-[#102a56] transition hover:bg-white sm:inline-flex"
+          className="focus-ring hidden rounded-full border premium-hairline bg-white/64 px-4 py-2 text-sm text-[#102a56] transition hover:bg-white/90 sm:inline-flex"
           href="/sample"
         >
           See how it feels
         </Link>
       </nav>
 
-      <section className="mx-auto grid max-w-6xl gap-14 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-24">
+      <section className="mx-auto grid max-w-6xl gap-16 py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-28">
         <div className="soft-enter max-w-4xl">
-          <p className="mb-6 inline-flex items-center gap-2 rounded-full border premium-hairline bg-white/70 px-4 py-2 text-sm text-[#666d78]">
-            <Sparkles size={15} className="text-[#6d73d9]" aria-hidden />
+          <p className="mb-7 inline-flex items-center gap-2 rounded-full border premium-hairline bg-white/70 px-4 py-2 text-sm text-[#666d78]">
+            <Sparkles size={14} className="text-[#6d73d9]" aria-hidden />
             A calmer way to learn from every paper
           </p>
-          <h1 className="text-balance max-w-4xl text-5xl font-semibold leading-[0.98] tracking-normal sm:text-7xl lg:text-8xl">
+          <h1 className="text-balance max-w-4xl text-5xl font-medium leading-[1.03] tracking-normal sm:text-6xl lg:text-7xl">
             This paper is not the end.
             <span className="block text-[#102a56]">It can show the next step.</span>
           </h1>
-          <p className="mt-7 max-w-2xl text-xl leading-9 text-[#5f6671]">
+          <p className="mt-8 max-w-2xl text-lg leading-8 text-[#5f6671]">
             A marked paper can feel heavy. We will help you understand what happened and what
             to try next, without making the score feel like the whole story.
           </p>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-11 flex flex-col gap-3 sm:flex-row">
             <Link
-              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#091b3d]"
+              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#091b3d]"
               href="/analyse"
             >
               Help me understand my paper
-              <ArrowRight size={18} aria-hidden />
+              <ArrowRight size={17} aria-hidden />
             </Link>
             <Link
-              className="focus-ring inline-flex items-center justify-center rounded-full border premium-hairline bg-white/72 px-6 py-3.5 text-base font-medium text-[#102a56] transition hover:bg-white"
+              className="focus-ring inline-flex items-center justify-center rounded-full border premium-hairline bg-white/72 px-5 py-3 text-sm font-medium text-[#102a56] transition hover:bg-white/90"
               href="/sample"
             >
               See a gentle example
@@ -56,12 +56,12 @@ export function LandingPage() {
         </div>
 
         <div className="soft-enter-delay">
-          <div className="glass paper-shadow rounded-[38px] p-5 sm:p-7">
-            <div className="rounded-[30px] border premium-hairline bg-white/82 p-6">
+          <div className="glass paper-shadow rounded-[36px] p-6 sm:p-8">
+            <div className="rounded-[28px] border premium-hairline bg-white/82 p-6 sm:p-7">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-[#666d78]">Your next step</p>
-                  <h2 className="mt-1 text-2xl font-semibold">Projectile Motion</h2>
+                  <h2 className="mt-1 text-xl font-medium">Projectile Motion</h2>
                 </div>
                 <span className="rounded-full bg-[#edf8f3] px-3 py-1 text-sm text-[#102a56]">
                   Ready when you are
@@ -69,8 +69,8 @@ export function LandingPage() {
               </div>
 
               <div className="mt-8 rounded-[26px] border premium-hairline bg-[#fbfaf7] p-5">
-                <div className="mb-4 flex items-center gap-3">
-                  <FileText size={20} className="text-[#102a56]" aria-hidden />
+                <div className="mb-5 flex items-center gap-3">
+                  <FileText size={18} className="text-[#102a56]" aria-hidden />
                   <span className="text-sm font-medium text-[#2b3340]">Teacher-marked answer</span>
                 </div>
                 <div className="space-y-3">
@@ -83,7 +83,7 @@ export function LandingPage() {
 
               <div className="mt-5 rounded-[26px] bg-[#102a56] p-5 text-white">
                 <p className="text-sm text-white/68">One small step for today</p>
-                <p className="mt-2 text-2xl font-semibold leading-snug">
+                <p className="mt-2 text-xl font-medium leading-snug">
                   Check the final value once before moving on.
                 </p>
               </div>
@@ -117,10 +117,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl pb-16">
-        <div className="rounded-[34px] border premium-hairline bg-white/54 p-6 sm:p-8">
+      <section className="mx-auto max-w-6xl pb-20">
+        <div className="rounded-[32px] border premium-hairline bg-white/54 p-7 sm:p-9">
           <p className="text-sm font-medium text-[#6d73d9]">You have already faced the hardest part.</p>
-          <p className="mt-3 max-w-3xl text-2xl leading-10 text-[#2b3340]">
+          <p className="mt-4 max-w-3xl text-xl leading-9 text-[#2b3340]">
             When you are ready, bring the paper. We will find one clear next step that feels
             possible today.
           </p>

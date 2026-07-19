@@ -45,7 +45,7 @@ a,
 button,
 label,
 input {
-  transition-duration: 180ms;
+  transition-duration: 220ms;
   transition-timing-function: ease;
 }
 
@@ -64,12 +64,12 @@ input::placeholder {
 
 .glass {
   background: var(--surface);
-  border: 1px solid rgba(230, 226, 218, 0.9);
-  backdrop-filter: blur(22px);
+  border: 1px solid rgba(230, 226, 218, 0.72);
+  backdrop-filter: blur(20px);
 }
 
 .paper-shadow {
-  box-shadow: 0 24px 80px rgba(16, 42, 86, 0.08);
+  box-shadow: 0 22px 70px rgba(16, 42, 86, 0.06);
 }
 
 .focus-ring {
@@ -90,11 +90,11 @@ input::placeholder {
 }
 
 .soft-enter {
-  animation: soft-enter 560ms ease both;
+  animation: soft-enter 620ms ease both;
 }
 
 .soft-enter-delay {
-  animation: soft-enter 680ms ease 90ms both;
+  animation: soft-enter 740ms ease 100ms both;
 }
 
 .slow-breathe {
@@ -153,28 +153,28 @@ input::placeholder {
   0%,
   22%,
   100% {
-    opacity: 0.58;
+    opacity: 0.66;
     transform: translateY(0) scale(1);
   }
   8%,
   16% {
     opacity: 1;
-    transform: translateY(-2px) scale(1.015);
+    transform: translateY(-1px) scale(1.006);
   }
 }
 
 @keyframes journey-line {
   0% {
     transform: scaleY(0);
-    opacity: 0.28;
+    opacity: 0.22;
   }
   45% {
     transform: scaleY(1);
-    opacity: 0.72;
+    opacity: 0.54;
   }
   100% {
     transform: scaleY(1);
-    opacity: 0.28;
+    opacity: 0.22;
   }
 }
 

@@ -33,18 +33,18 @@ export function SampleProcessing() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-5 py-10">
-      <section className="glass paper-shadow w-full max-w-2xl rounded-[36px] p-8 sm:p-10">
-        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
-          <Sparkles size={22} aria-hidden />
+      <section className="glass paper-shadow w-full max-w-2xl rounded-[34px] p-8 sm:p-10">
+        <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
+          <Sparkles size={20} aria-hidden />
         </span>
         <p className="mt-5 text-center text-sm font-medium text-[#102a56]">Every paper is another step forward.</p>
-        <h1 className="mt-3 text-center text-balance text-5xl font-semibold leading-tight">
+        <h1 className="mt-4 text-center text-balance text-4xl font-medium leading-tight sm:text-5xl">
           Your next step is almost ready.
         </h1>
-        <div className="mt-9 space-y-3" role="status" aria-live="polite">
+        <div className="mt-10 space-y-3" role="status" aria-live="polite">
           {stages.map((stage, index) => (
             <div
-              className={`rounded-[24px] border px-4 py-4 transition ${
+              className={`rounded-[22px] border px-4 py-3.5 transition ${
                 index <= activeStage
                   ? "border-[#dce0ff] bg-white text-[#102a56]"
                   : "border-[#e8e5df] bg-white/48 text-[#757d88]"
@@ -63,11 +63,11 @@ export function SampleProcessing() {
           ))}
         </div>
         <Link
-          className="focus-ring mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
+          className="focus-ring mx-auto mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 text-sm font-medium text-white"
           href="/results/sample-physics-projectile-motion"
         >
           See the next step
-          <ArrowRight size={18} aria-hidden />
+          <ArrowRight size={17} aria-hidden />
         </Link>
       </section>
     </main>
