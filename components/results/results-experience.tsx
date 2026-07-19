@@ -6,20 +6,16 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  Bell,
   BookOpen,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   ClipboardCheck,
-  Languages,
   MessageCircle,
-  Moon,
   Search,
   ShieldCheck,
   Sparkles,
   Target,
-  UsersRound,
   ZoomIn,
   ZoomOut
 } from "lucide-react";
@@ -592,10 +588,8 @@ function CircularMetric({ label, value }: { label: string; value: number }) {
   );
 }
 
-function RevisionAndJourney({ analysis }: { analysis: AnalysisResult }) {
+function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; isLive: boolean }) {
   const reviewCount = analysis.reviewOpportunities.length;
-  const repeatedTopic = analysis.topicProgress[0]?.topic ?? "Projectile Motion";
-
   return (
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12">
       <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
@@ -627,10 +621,12 @@ function RevisionAndJourney({ analysis }: { analysis: AnalysisResult }) {
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
             <div>
               <p className="text-sm font-medium text-[#6d73d9]">Learning Journey</p>
-              <h2 className="mt-2 text-4xl font-semibold">Sample learning history</h2>
+              <h2 className="mt-2 text-4xl font-semibold">
+                {isLive ? "Learning history preview" : "Sample learning history"}
+              </h2>
             </div>
             <span className="rounded-full border premium-hairline bg-white/70 px-3 py-1 text-sm text-[#666d78]">
-              Seeded data
+              {isLive ? "Preview" : "Seeded data"}
             </span>
           </div>
           <p className="mt-4 leading-7 text-[#5f6671]">
@@ -669,44 +665,17 @@ function RevisionAndJourney({ analysis }: { analysis: AnalysisResult }) {
         </div>
       </section>
 
-      <section className="mt-5 grid gap-5 lg:grid-cols-3">
-        <article className="glass rounded-[34px] p-6">
-          <UsersRound className="text-[#102a56]" size={24} aria-hidden />
-          <p className="mt-5 text-sm font-medium text-[#6d73d9]">Teacher View</p>
-          <h2 className="mt-2 text-3xl font-semibold">A respectful teaching summary.</h2>
-          <p className="mt-4 leading-7 text-[#5f6671]">
-            Common next concept: {repeatedTopic}. Most questions ask for evidence, full-mark
-            guidance, and focused practice.
-          </p>
-        </article>
-
-        <article className="glass rounded-[34px] p-6">
+      <section className="mt-5">
+        <article className="glass rounded-[34px] p-6 sm:p-8">
           <ClipboardCheck className="text-[#102a56]" size={24} aria-hidden />
           <p className="mt-5 text-sm font-medium text-[#6d73d9]">Review Opportunity</p>
-          <h2 className="mt-2 text-3xl font-semibold">
+          <h2 className="mt-2 max-w-3xl text-4xl font-semibold leading-tight">
             {reviewCount > 0 ? `${reviewCount} objective case to discuss.` : "No objective review signal."}
           </h2>
-          <p className="mt-4 leading-7 text-[#5f6671]">
+          <p className="mt-4 max-w-3xl leading-7 text-[#5f6671]">
             Potential review opportunities are shown only when objective evidence is strong.
-            Teacher authority remains protected.
+            Teacher authority remains protected, and subjective answers stay in the learning lane.
           </p>
-        </article>
-
-        <article className="glass rounded-[34px] p-6">
-          <Moon className="text-[#102a56]" size={24} aria-hidden />
-          <p className="mt-5 text-sm font-medium text-[#6d73d9]">Settings</p>
-          <h2 className="mt-2 text-3xl font-semibold">Minimal by design.</h2>
-          <div className="mt-5 space-y-3 text-sm text-[#5f6671]">
-            <p className="flex items-center gap-2">
-              <Moon size={16} aria-hidden /> Theme follows system preference
-            </p>
-            <p className="flex items-center gap-2">
-              <Languages size={16} aria-hidden /> Language: English
-            </p>
-            <p className="flex items-center gap-2">
-              <Bell size={16} aria-hidden /> Notifications: quiet mode
-            </p>
-          </div>
         </article>
       </section>
     </div>
@@ -738,7 +707,7 @@ export function ResultsExperience({
         <div className="glass rounded-[34px] p-7 sm:p-9">
           <p className="text-sm font-medium text-[#6d73d9]">{analysis.exam.subject}</p>
           <h1 className="mt-3 max-w-4xl text-balance text-5xl font-semibold leading-tight sm:text-7xl">
-            Your improvement plan is ready.
+            Your paper has a next step.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5f6671]">
             {isLive
@@ -767,7 +736,7 @@ export function ResultsExperience({
       <Overview analysis={analysis} />
       <QuestionExplorer analysis={analysis} />
       <div id="journey">
-        <RevisionAndJourney analysis={analysis} />
+        <RevisionAndJourney analysis={analysis} isLive={isLive} />
       </div>
 
       <footer className="mx-auto max-w-7xl px-5 pb-10 pt-3 text-sm leading-6 text-[#666d78] sm:px-8 lg:px-12">

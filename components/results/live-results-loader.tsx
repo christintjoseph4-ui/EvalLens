@@ -54,8 +54,8 @@ export function LiveResultsLoader() {
           {status === "loading" ? "Preparing your result" : "Use the sample workflow"}
         </h1>
         <p className="mt-4 leading-7 text-[#5f6671]">
-          Live results are kept only in this browser session for the hackathon demo. If the
-          session is missing, the prepared sample remains available.
+          Live results are kept only in this browser session. If the session is missing,
+          the prepared sample remains available.
         </p>
         <Link
           className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"

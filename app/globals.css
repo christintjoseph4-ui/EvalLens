@@ -32,6 +32,10 @@ body {
   letter-spacing: 0;
 }
 
+main {
+  isolation: isolate;
+}
+
 button,
 input {
   font: inherit;
@@ -66,6 +70,41 @@ input {
 
 .premium-hairline {
   border-color: rgba(17, 19, 24, 0.08);
+}
+
+.soft-enter {
+  animation: soft-enter 560ms ease both;
+}
+
+.soft-enter-delay {
+  animation: soft-enter 680ms ease 90ms both;
+}
+
+.slow-breathe {
+  animation: slow-breathe 3.8s ease-in-out infinite;
+}
+
+@keyframes soft-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slow-breathe {
+  0%,
+  100% {
+    opacity: 0.68;
+    transform: scaleX(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

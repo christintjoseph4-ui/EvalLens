@@ -1,28 +1,7 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Brain, FileCheck2, FileText, Flag, Sparkles } from "lucide-react";
+import { ArrowRight, Check, FileText, Sparkles } from "lucide-react";
 
-const workflow = [
-  {
-    title: "Question Paper",
-    text: "The original intent, marks and concepts become the learning frame.",
-    icon: FileText
-  },
-  {
-    title: "Teacher Evaluation",
-    text: "Marks and annotations remain human-owned and respected.",
-    icon: FileCheck2
-  },
-  {
-    title: "Learning Intelligence",
-    text: "EvalLens turns evidence into question-wise insight.",
-    icon: Brain
-  },
-  {
-    title: "Goal Achievement",
-    text: "The paper becomes a calm plan for what to do next.",
-    icon: Flag
-  }
-];
+const story = ["Question paper", "Teacher evaluation", "Learning intelligence", "Goal achievement"];
 
 export function LandingPage() {
   return (
@@ -39,13 +18,13 @@ export function LandingPage() {
         </Link>
       </nav>
 
-      <section className="mx-auto grid max-w-6xl gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-24">
-        <div className="max-w-4xl">
+      <section className="mx-auto grid max-w-6xl gap-14 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-24">
+        <div className="soft-enter max-w-4xl">
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border premium-hairline bg-white/70 px-4 py-2 text-sm text-[#666d78]">
             <Sparkles size={15} className="text-[#6d73d9]" aria-hidden />
             Personalized learning intelligence
           </p>
-          <h1 className="text-balance max-w-4xl text-6xl font-semibold leading-[0.96] tracking-normal sm:text-7xl lg:text-8xl">
+          <h1 className="text-balance max-w-4xl text-5xl font-semibold leading-[0.98] tracking-normal sm:text-7xl lg:text-8xl">
             Every Evaluation.
             <span className="block text-[#102a56]">A Better Tomorrow.</span>
           </h1>
@@ -71,35 +50,50 @@ export function LandingPage() {
           </div>
         </div>
 
-        <div className="glass paper-shadow rounded-[34px] p-6">
-          <div className="mb-7">
-            <p className="text-sm text-[#666d78]">EvalLens workflow</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-normal">From marked paper to momentum.</h2>
-          </div>
-          <div className="space-y-3">
-            {workflow.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title}>
-                  <article className="rounded-[26px] border premium-hairline bg-white/74 p-5">
-                    <div className="flex items-start gap-4">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
-                        <Icon size={20} aria-hidden />
-                      </span>
-                      <div>
-                        <h3 className="text-lg font-semibold">{item.title}</h3>
-                        <p className="mt-1 max-w-sm text-sm leading-6 text-[#666d78]">{item.text}</p>
-                      </div>
-                    </div>
-                  </article>
-                  {index < workflow.length - 1 ? (
-                    <div className="flex h-7 items-center justify-center text-[#9aa2b1]">
-                      <ArrowDown size={16} aria-hidden />
-                    </div>
-                  ) : null}
+        <div className="soft-enter-delay">
+          <div className="glass paper-shadow rounded-[38px] p-5 sm:p-7">
+            <div className="rounded-[30px] border premium-hairline bg-white/82 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-[#666d78]">Analysed paper</p>
+                  <h2 className="mt-1 text-2xl font-semibold">Projectile Motion</h2>
                 </div>
-              );
-            })}
+                <span className="rounded-full bg-[#edf8f3] px-3 py-1 text-sm text-[#102a56]">
+                  Plan ready
+                </span>
+              </div>
+
+              <div className="mt-8 rounded-[26px] border premium-hairline bg-[#fbfaf7] p-5">
+                <div className="mb-4 flex items-center gap-3">
+                  <FileText size={20} className="text-[#102a56]" aria-hidden />
+                  <span className="text-sm font-medium text-[#2b3340]">Teacher marked answer</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="h-3 w-11/12 rounded-full bg-[#dfe5ee]" />
+                  <div className="h-3 w-8/12 rounded-full bg-[#dfe5ee]" />
+                  <div className="h-10 rounded-2xl border border-[#72c7a3]/45 bg-[#72c7a3]/16" />
+                  <div className="h-3 w-7/12 rounded-full bg-[#dfe5ee]" />
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[26px] bg-[#102a56] p-5 text-white">
+                <p className="text-sm text-white/68">Today&apos;s focus</p>
+                <p className="mt-2 text-2xl font-semibold leading-snug">
+                  Recover calculation marks with one cleaner final step.
+                </p>
+              </div>
+
+              <div className="mt-5 grid gap-2">
+                {story.map((item) => (
+                  <div className="flex items-center gap-3 text-sm text-[#5f6671]" key={item}>
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
+                      <Check size={14} aria-hidden />
+                    </span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

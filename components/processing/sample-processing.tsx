@@ -7,9 +7,9 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 const stages = [
   "Understanding the questions",
-  "Connecting answers with evaluator observations",
-  "Identifying growth opportunities",
-  "Preparing your next learning steps"
+  "Understanding teacher feedback",
+  "Building learning intelligence",
+  "Preparing your improvement plan"
 ];
 
 export function SampleProcessing() {
@@ -41,7 +41,7 @@ export function SampleProcessing() {
         <h1 className="mt-3 text-center text-balance text-5xl font-semibold leading-tight">
           Your improvement plan is forming
         </h1>
-        <div className="mt-9 space-y-3">
+        <div className="mt-9 space-y-3" role="status" aria-live="polite">
           {stages.map((stage, index) => (
             <div
               className={`rounded-[24px] border px-4 py-4 transition ${

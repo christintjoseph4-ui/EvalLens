@@ -74,9 +74,9 @@ const slots: Array<{
 
 const processingMessages = [
   "Understanding the questions",
-  "Connecting answers with evaluator observations",
-  "Identifying growth opportunities",
-  "Preparing your next learning steps"
+  "Understanding teacher feedback",
+  "Building learning intelligence",
+  "Preparing your improvement plan"
 ];
 
 function isSupportedFile(file: File) {
@@ -230,7 +230,7 @@ export function UploadExperience() {
           </span>
           <p className="mt-5 text-sm font-medium text-[#102a56]">Creating your improvement plan</p>
           <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Reading the paper with care</h1>
-          <div className="mt-9 space-y-3 text-left">
+          <div className="mt-9 space-y-3 text-left" role="status" aria-live="polite">
             {processingMessages.map((message, index) => (
               <div
                 className="flex items-center gap-3 rounded-[22px] border premium-hairline bg-white/70 px-4 py-3"
@@ -291,12 +291,12 @@ export function UploadExperience() {
           </div>
         </div>
 
-        <div>
+        <div className="soft-enter">
           <div className="grid gap-4 md:grid-cols-2">
             {slots.map((slot) => (
               <label
                 className={`focus-within:ring-2 focus-within:ring-[#6d73d9]/35 rounded-[30px] border premium-hairline bg-white/70 p-5 transition hover:bg-white ${
-                  slot.required ? "md:min-h-64" : ""
+                  slot.required ? "md:min-h-64" : "md:min-h-44"
                 }`}
                 key={slot.id}
               >
@@ -309,7 +309,11 @@ export function UploadExperience() {
                   ) : null}
                 </span>
                 <span className="mt-2 block text-sm text-[#666d78]">{slot.helper}</span>
-                <span className="mt-6 flex min-h-32 flex-col items-center justify-center rounded-[26px] border border-dashed border-[#ccd3df] bg-[#f8f9fc] px-4 py-6 text-center">
+                <span
+                  className={`mt-6 flex flex-col items-center justify-center rounded-[26px] border border-dashed border-[#ccd3df] bg-[#f8f9fc] px-4 py-6 text-center ${
+                    slot.required ? "min-h-32" : "min-h-20"
+                  }`}
+                >
                   <UploadCloud size={25} className="text-[#102a56]" aria-hidden />
                   <span className="mt-3 max-w-full truncate text-sm text-[#2b3340]">
                     {uploads[slot.id]?.name ?? "Choose file"}
