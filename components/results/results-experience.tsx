@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -50,15 +50,26 @@ const classificationCopy: Record<
   }
 };
 
-const suggestedPrompts = [
-  "Why was this answer incomplete?",
-  "What exactly was missing?",
-  "Explain the teacher's comment.",
-  "Show me a full-mark answer.",
-  "Give me two similar questions.",
-  "Could this answer benefit from teacher review?",
-  "Teach this concept in two minutes."
+const promptGroups = [
+  {
+    label: "Understand",
+    prompts: [
+      "Why was this answer incomplete?",
+      "What exactly was missing?",
+      "Explain the teacher's comment."
+    ]
+  },
+  {
+    label: "Improve",
+    prompts: ["Show me a full-mark answer.", "Teach this concept in two minutes."]
+  },
+  {
+    label: "Practice",
+    prompts: ["Give me two similar questions.", "Could this answer benefit from teacher review?"]
+  }
 ];
+
+const defaultPrompt = promptGroups[0]?.prompts[0] ?? "";
 
 function percent(value: number) {
   return `${Math.round(value)}%`;
@@ -100,11 +111,10 @@ function EvidenceOverlay({ question }: { question: AnalysisQuestion }) {
     return (
       <div className="rounded-[28px] border premium-hairline bg-white/76 p-6">
         <p className="text-sm font-medium text-[#6d73d9]">Evidence preview</p>
-        <h3 className="mt-2 text-2xl font-semibold">Paper image preview unavailable</h3>
+        <h3 className="mt-2 text-2xl font-semibold">Text evidence is ready</h3>
         <p className="mt-3 leading-7 text-[#5f6671]">
-          EvalLens could read the uploaded document, but this demo keeps live files only in the
-          current session and does not persist rendered PDF pages. Use the evidence notes on the
-          right for this question.
+          EvalLens read the uploaded document. For this session, the paper view uses the
+          extracted answer and evidence notes for this question.
         </p>
         <div className="mt-5 rounded-2xl border premium-hairline bg-[#f8f9fc] p-4">
           <p className="text-sm font-semibold">Student answer evidence</p>
@@ -130,7 +140,7 @@ function EvidenceOverlay({ question }: { question: AnalysisQuestion }) {
           width={900}
           height={1200}
           className="h-auto w-full"
-          priority
+          loading="lazy"
         />
       )}
       <div
@@ -160,30 +170,11 @@ function EvidenceOverlay({ question }: { question: AnalysisQuestion }) {
 
 function MetricCard({ label, value, helper }: { label: string; value: string; helper: string }) {
   return (
-    <article className="rounded-3xl border border-[#e2dcd0] bg-white/68 p-5">
-      <p className="text-sm text-[#666d78]">{label}</p>
-      <p className="mt-2 text-3xl font-semibold">{value}</p>
-      <p className="mt-2 text-sm leading-6 text-[#656d69]">{helper}</p>
+    <article className="rounded-[26px] border premium-hairline bg-white/72 p-5 transition duration-300 hover:-translate-y-0.5 hover:bg-white/88">
+      <p className="text-sm font-medium text-[#666d78]">{label}</p>
+      <p className="mt-3 text-3xl font-semibold text-[#102a56]">{value}</p>
+      <p className="mt-2 text-sm leading-6 text-[#5f6671]">{helper}</p>
     </article>
-  );
-}
-
-function ProgressBar({ label, value }: { label: string; value: number }) {
-  return (
-    <div>
-      <div className="flex items-center justify-between gap-4 text-sm">
-        <span className="text-[#2b3340]">{label}</span>
-        <span className="font-medium">{percent(value)}</span>
-      </div>
-      <div className="mt-2 h-2 rounded-full bg-[#e7e1d6]">
-        <motion.div
-          className="h-2 rounded-full bg-[#6d73d9]"
-          initial={{ width: 0 }}
-          animate={{ width: `${value}%` }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        />
-      </div>
-    </div>
   );
 }
 
@@ -207,7 +198,7 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
     {
       label: "Potential score",
       value: `${analysis.studentGoal.potentialScore}/${analysis.exam.maximumMarks}`,
-      helper: "Never exceeds maximum marks"
+      helper: "A grounded goal within this paper"
     }
   ];
 
@@ -331,10 +322,20 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
               </button>
             </div>
           </div>
-          <div className="max-h-[760px] overflow-auto rounded-[24px] bg-[#ece7dc] p-3">
-            <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
-              <EvidenceOverlay question={selectedQuestion} />
-            </div>
+          <div className="max-h-[760px] overflow-auto rounded-[24px] bg-[#eef1f6] p-3">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedQuestion.id}
+                initial={{ opacity: 0, scale: 0.992, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.992, y: -6 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+              >
+                <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
+                  <EvidenceOverlay question={selectedQuestion} />
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
           <div className="mt-4 flex items-center justify-between">
             <button
@@ -359,6 +360,14 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
         </div>
 
         <aside className="glass rounded-[30px] p-5">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedQuestion.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.24, ease: "easeOut" }}
+            >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-sm text-[#666d78]">Question {selectedQuestion.number}</p>
@@ -426,7 +435,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
 
           <div className="mt-5 flex flex-wrap gap-2">
             {[
-              ["deduction", "Why did I lose marks?"],
+              ["deduction", "What affected this answer?"],
               ["full-mark", "Show a full-mark answer"],
               ["teach", "Teach this concept"],
               ["practice", "Give me a similar question"],
@@ -463,6 +472,8 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
           </div>
 
           <AskMyPaper key={selectedQuestion.id} question={selectedQuestion} />
+            </motion.div>
+          </AnimatePresence>
         </aside>
       </div>
     </section>
@@ -470,7 +481,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
 }
 
 function AskMyPaper({ question }: { question: AnalysisQuestion }) {
-  const [prompt, setPrompt] = useState(suggestedPrompts[0] ?? "");
+  const [prompt, setPrompt] = useState(defaultPrompt);
   const [response, setResponse] = useState<AskResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -507,16 +518,25 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
         <MessageCircle size={19} className="text-[#102a56]" aria-hidden />
         Ask My Paper
       </h4>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {suggestedPrompts.map((item) => (
-          <button
-            className="focus-ring rounded-full border premium-hairline bg-white px-3 py-2 text-xs font-medium text-[#102a56]"
-            type="button"
-            key={item}
-            onClick={() => void askPaper(item)}
-          >
-            {item}
-          </button>
+      <div className="mt-5 grid gap-4">
+        {promptGroups.map((group) => (
+          <div key={group.label}>
+            <p className="mb-2 text-xs font-medium uppercase tracking-[0.14em] text-[#7b8391]">
+              {group.label}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {group.prompts.map((item) => (
+                <button
+                  className="focus-ring rounded-full border premium-hairline bg-white px-3 py-2 text-xs font-medium text-[#102a56] transition hover:-translate-y-0.5 hover:bg-[#f8f9fc]"
+                  type="button"
+                  key={item}
+                  onClick={() => void askPaper(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
       <div className="mt-4 flex gap-2">
@@ -542,7 +562,12 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
       {isLoading ? <p className="mt-4 text-sm text-[#666d78]">Grounding the answer in this question...</p> : null}
       {error ? <p className="mt-4 text-sm text-[#7a4e43]">{error}</p> : null}
       {response ? (
-        <div className="mt-4 space-y-3 text-sm leading-6">
+        <motion.div
+          className="mt-5 space-y-4 rounded-[24px] border premium-hairline bg-[#fbfaf7] p-4 text-sm leading-6"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.24, ease: "easeOut" }}
+        >
           <div>
             <p className="font-semibold">Direct evidence</p>
             <ul className="mt-1 space-y-1 text-[#5f6671]">
@@ -563,17 +588,17 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
             <span className="font-semibold">Next step: </span>
             <span className="text-[#5f6671]">{response.nextAction}</span>
           </p>
-        </div>
+        </motion.div>
       ) : null}
     </section>
   );
 }
 
-function CircularMetric({ label, value }: { label: string; value: number }) {
+function CircularMetric({ label, value, helper }: { label: string; value: number; helper: string }) {
   const background = `conic-gradient(#6d73d9 ${Math.round(value) * 3.6}deg, #edf0f6 0deg)`;
 
   return (
-    <article className="rounded-[30px] border premium-hairline bg-white/70 p-5 text-center">
+    <article className="rounded-[30px] border premium-hairline bg-white/70 p-5 text-center transition duration-300 hover:-translate-y-0.5 hover:bg-white/88">
       <div
         className="mx-auto flex h-28 w-28 items-center justify-center rounded-full"
         style={{ background }}
@@ -584,6 +609,7 @@ function CircularMetric({ label, value }: { label: string; value: number }) {
         </div>
       </div>
       <p className="mt-4 font-semibold">{label}</p>
+      <p className="mt-2 text-sm leading-6 text-[#666d78]">{helper}</p>
     </article>
   );
 }
@@ -602,7 +628,7 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-semibold">
-                      {index === 0 ? "Today's Focus" : index === 1 ? "Tomorrow" : "This Week"} · {item.topic}
+                      {index === 0 ? "Today's Goal" : index === 1 ? "Tomorrow" : "This Week"} - {item.topic}
                     </p>
                     <p className="mt-1 text-sm leading-6 text-[#5f6671]">{item.reason}</p>
                   </div>
@@ -622,29 +648,49 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
             <div>
               <p className="text-sm font-medium text-[#6d73d9]">Learning Journey</p>
               <h2 className="mt-2 text-4xl font-semibold">
-                {isLive ? "Learning history preview" : "Sample learning history"}
+                {isLive ? "Learning history preview" : "Prepared learning path"}
               </h2>
             </div>
             <span className="rounded-full border premium-hairline bg-white/70 px-3 py-1 text-sm text-[#666d78]">
-              {isLive ? "Preview" : "Seeded data"}
+              {isLive ? "Preview" : "Prepared path"}
             </span>
           </div>
           <p className="mt-4 leading-7 text-[#5f6671]">
             Your conceptual understanding has improved across three evaluations. Numerical
             accuracy remains your highest-impact development area.
           </p>
-          <div className="mt-7 grid gap-4 sm:grid-cols-3">
+          <div className="mt-7 space-y-3">
             {analysis.historicalPreview.map((point, index) => (
-              <article className="rounded-[28px] border premium-hairline bg-white/70 p-5" key={point.testName}>
-                <p className="text-sm text-[#666d78]">
-                  {index === 0 ? "Current" : index === 1 ? "Next" : "Target"}
-                </p>
-                <h3 className="mt-2 text-xl font-semibold">{point.testName}</h3>
-                <p className="mt-4 text-3xl font-semibold text-[#102a56]">{point.score}/40</p>
-                <div className="mt-4 space-y-3">
-                  <ProgressBar label="Concept" value={point.conceptMastery} />
-                  <ProgressBar label="Accuracy" value={point.numericalAccuracy} />
-                  <ProgressBar label="Completeness" value={point.answerCompleteness} />
+              <article
+                className="rounded-[26px] border premium-hairline bg-white/70 p-5"
+                key={point.testName}
+              >
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-4">
+                    <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#edf8f3] text-sm font-semibold text-[#102a56]">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-[#6d73d9]">
+                        {index === 0 ? "Current" : index === 1 ? "Next" : "Goal"}
+                      </p>
+                      <h3 className="mt-1 text-xl font-semibold">{point.testName}</h3>
+                    </div>
+                  </div>
+                  <p className="rounded-full bg-[#102a56] px-4 py-2 text-sm font-semibold text-white">
+                    {point.score}/40
+                  </p>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2 text-sm text-[#5f6671]">
+                  <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
+                    Concept {percent(point.conceptMastery)}
+                  </span>
+                  <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
+                    Accuracy {percent(point.numericalAccuracy)}
+                  </span>
+                  <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
+                    Completeness {percent(point.answerCompleteness)}
+                  </span>
                 </div>
               </article>
             ))}
@@ -655,13 +701,29 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
       <section className="mt-5">
         <div className="mb-5">
           <p className="text-sm font-medium text-[#6d73d9]">Learning Twin</p>
-          <h2 className="mt-2 text-4xl font-semibold">Not statistics. A clearer picture.</h2>
+          <h2 className="mt-2 text-4xl font-semibold">A learner profile, not just statistics.</h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <CircularMetric label="Concept Mastery" value={analysis.learningTwin.conceptMastery} />
-          <CircularMetric label="Numerical Accuracy" value={analysis.learningTwin.numericalAccuracy} />
-          <CircularMetric label="Presentation" value={analysis.learningTwin.presentation} />
-          <CircularMetric label="Learning Confidence" value={analysis.learningTwin.answerCompleteness} />
+          <CircularMetric
+            label="Concept Mastery"
+            value={analysis.learningTwin.conceptMastery}
+            helper="Understands the core idea"
+          />
+          <CircularMetric
+            label="Numerical Accuracy"
+            value={analysis.learningTwin.numericalAccuracy}
+            helper="Needs the sharpest practice"
+          />
+          <CircularMetric
+            label="Presentation"
+            value={analysis.learningTwin.presentation}
+            helper="Shows work clearly"
+          />
+          <CircularMetric
+            label="Learning Confidence"
+            value={analysis.learningTwin.answerCompleteness}
+            helper="Can complete stronger answers"
+          />
         </div>
       </section>
 
@@ -712,7 +774,7 @@ export function ResultsExperience({
           <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5f6671]">
             {isLive
               ? "This live analysis was created from the uploaded papers in this browser session. EvalLens connects visible evidence, awarded marks, and next actions without overriding the evaluator."
-              : "This prepared Physics demonstration shows how EvalLens connects marks, teacher annotations, student work, and next actions without overriding the evaluator."}
+              : "This prepared Physics paper shows how EvalLens connects marks, teacher annotations, student work, and next actions without overriding the evaluator."}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a
@@ -744,7 +806,7 @@ export function ResultsExperience({
           <p>
             {isLive
               ? "Every conclusion shown here is tied to extracted paper evidence. Keep the original paper nearby for teacher review conversations."
-              : "Every conclusion shown here is tied to seeded paper evidence. Live multimodal analysis is available from the upload flow when configured."}
+              : "Every conclusion shown here is tied to prepared paper evidence. Upload your own paper to generate the same evidence-led view."}
           </p>
           <span className="inline-flex items-center gap-2 text-[#102a56]">
             <Sparkles size={16} aria-hidden />

@@ -125,7 +125,7 @@ export function UploadExperience() {
   function updateFile(slot: UploadSlot, file: File | null) {
     setError("");
     if (file && !isSupportedFile(file)) {
-      setError(`That file type is not supported yet. Please use ${acceptedFormats}.`);
+      setError(`Please upload a ${acceptedFormats} file.`);
       return;
     }
 
@@ -200,7 +200,7 @@ export function UploadExperience() {
 
       const validated = safeValidateAnalysisResult(payload.analysis);
       if (!validated.success) {
-        setError("The live analysis was not reliable enough to show. Please explore the prepared sample.");
+        setError("This paper needs a more careful read. You can still explore the prepared sample.");
         return;
       }
 
@@ -212,9 +212,7 @@ export function UploadExperience() {
       );
       router.push(`/results/live?analysisId=${encodeURIComponent(sessionAnalysis.analysisId)}`);
     } catch {
-      setError(
-        "We could not complete this upload reliably. Explore the prepared sample to experience the complete EvalLens workflow."
-      );
+      setError("This upload needs another try. You can still explore the prepared sample.");
     } finally {
       window.clearTimeout(timeoutId);
       setIsProcessing(false);
@@ -228,7 +226,7 @@ export function UploadExperience() {
           <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
             <Sparkles size={22} aria-hidden />
           </span>
-          <p className="mt-5 text-sm font-medium text-[#102a56]">Creating your improvement plan</p>
+          <p className="mt-5 text-sm font-medium text-[#102a56]">Building your improvement plan</p>
           <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Reading the paper with care</h1>
           <div className="mt-9 space-y-3 text-left" role="status" aria-live="polite">
             {processingMessages.map((message, index) => (
@@ -245,7 +243,7 @@ export function UploadExperience() {
             ))}
           </div>
           <p className="mt-6 text-sm leading-6 text-[#666d78]">
-            Live analysis is running on the server. If the upload cannot be read reliably,
+            EvalLens is reading the paper and teacher feedback. If this upload needs more care,
             the prepared sample remains available.
           </p>
           {error ? (
@@ -274,13 +272,13 @@ export function UploadExperience() {
 
       <section className="mx-auto grid max-w-6xl gap-10 py-12 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="lg:pt-8">
-          <p className="text-sm font-medium text-[#6d73d9]">Analyse My Paper</p>
+          <p className="text-sm font-medium text-[#6d73d9]">Start My Learning Journey</p>
           <h1 className="mt-4 text-balance text-5xl font-semibold leading-[1.02] sm:text-6xl">
             Your evaluated paper becomes a learning journey.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-[#5f6671]">
-            Add the evaluated paper and related exam material. Live analysis uses the server-side
-            OpenAI pipeline; the prepared sample stays available for a reliable demo.
+            Add the evaluated paper and related exam material. EvalLens will turn the evidence
+            into a calm plan for what to do next.
           </p>
           <div className="mt-7 flex max-w-xl gap-3 rounded-[26px] border premium-hairline bg-white/62 p-4 text-sm leading-6 text-[#5f6671]">
             <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={18} aria-hidden />
@@ -381,13 +379,13 @@ export function UploadExperience() {
               onClick={() => void createPlan()}
             >
               <FileText size={18} aria-hidden />
-              {isProcessing ? "Creating my improvement plan" : "Create my improvement plan"}
+              {isProcessing ? "Building my improvement plan" : "Build my improvement plan"}
             </button>
             <Link
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-6 py-3.5 font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Try the sample experience
+              Try Sample Experience
               <ArrowRight size={18} aria-hidden />
             </Link>
           </div>

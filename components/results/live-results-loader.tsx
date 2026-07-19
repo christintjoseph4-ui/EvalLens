@@ -51,7 +51,7 @@ export function LiveResultsLoader() {
           {status === "loading" ? "Opening your analysis" : "Analysis not available"}
         </p>
         <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">
-          {status === "loading" ? "Preparing your result" : "Use the sample workflow"}
+          {status === "loading" ? "Preparing your result" : "Open the prepared paper"}
         </h1>
         <p className="mt-4 leading-7 text-[#5f6671]">
           Live results are kept only in this browser session. If the session is missing,
@@ -61,7 +61,7 @@ export function LiveResultsLoader() {
           className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
           href="/sample"
         >
-          Try the sample experience
+          Explore the prepared paper
         </Link>
       </section>
     </main>

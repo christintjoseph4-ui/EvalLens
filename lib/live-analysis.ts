@@ -132,7 +132,7 @@ async function prepareFile(file: File | null, slot: UploadSlot, required: boolea
   if (pageCount && pageCount > maxUploadPageCount) {
     throw new CalmAnalysisError(
       "TOO_MANY_PAGES",
-      `That ${slotLabels[slot]} appears to have more than ${maxUploadPageCount} pages. Please use a shorter paper for this demo.`
+      `That ${slotLabels[slot]} appears to have more than ${maxUploadPageCount} pages. Please use a shorter paper for this session.`
     );
   }
 

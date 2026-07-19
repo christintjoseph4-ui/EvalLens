@@ -1,7 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, Check, FileText, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, FileCheck2, FileText, Flag, Lightbulb, Sparkles } from "lucide-react";
 
-const story = ["Question paper", "Teacher evaluation", "Learning intelligence", "Goal achievement"];
+const story = [
+  { label: "Question Paper", icon: FileText },
+  { label: "Teacher Evaluation", icon: FileCheck2 },
+  { label: "Learning Insights", icon: Lightbulb },
+  { label: "Goal Achievement", icon: Flag }
+];
 
 export function LandingPage() {
   return (
@@ -14,7 +19,7 @@ export function LandingPage() {
           className="focus-ring hidden rounded-full border premium-hairline bg-white/64 px-4 py-2 text-sm text-[#102a56] transition hover:bg-white sm:inline-flex"
           href="/sample"
         >
-          Sample experience
+          Explore sample
         </Link>
       </nav>
 
@@ -38,14 +43,14 @@ export function LandingPage() {
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#091b3d]"
               href="/analyse"
             >
-              Analyse My Paper
+              Start My Learning Journey
               <ArrowRight size={18} aria-hidden />
             </Link>
             <Link
               className="focus-ring inline-flex items-center justify-center rounded-full border premium-hairline bg-white/72 px-6 py-3.5 text-base font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Try Sample Experience
+              Explore My Paper
             </Link>
           </div>
         </div>
@@ -55,7 +60,7 @@ export function LandingPage() {
             <div className="rounded-[30px] border premium-hairline bg-white/82 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[#666d78]">Analysed paper</p>
+                  <p className="text-sm text-[#666d78]">Learning plan</p>
                   <h2 className="mt-1 text-2xl font-semibold">Projectile Motion</h2>
                 </div>
                 <span className="rounded-full bg-[#edf8f3] px-3 py-1 text-sm text-[#102a56]">
@@ -83,15 +88,29 @@ export function LandingPage() {
                 </p>
               </div>
 
-              <div className="mt-5 grid gap-2">
-                {story.map((item) => (
-                  <div className="flex items-center gap-3 text-sm text-[#5f6671]" key={item}>
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
-                      <Check size={14} aria-hidden />
-                    </span>
-                    {item}
-                  </div>
-                ))}
+              <div className="relative mt-6 overflow-hidden rounded-[26px] border premium-hairline bg-white/72 p-4">
+                <div className="absolute left-8 top-11 h-[calc(100%-88px)] w-px bg-[#dfe5ee]">
+                  <div className="journey-line h-full w-px bg-[#6d73d9]" />
+                </div>
+                <div className="relative grid gap-3">
+                  {story.map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                      <div
+                        className="journey-step flex min-h-12 items-center gap-3 rounded-2xl bg-white/60 px-3 text-sm font-medium text-[#2b3340]"
+                        key={item.label}
+                      >
+                        <span className="z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
+                          <Icon size={16} aria-hidden />
+                        </span>
+                        <span>{item.label}</span>
+                        {index < story.length - 1 ? (
+                          <ArrowDown className="ml-auto text-[#a4acb9]" size={14} aria-hidden />
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
