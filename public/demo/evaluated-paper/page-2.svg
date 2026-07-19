@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Evaluated Physics answer paper page 2</title>
+  <desc id="desc">Sample evaluated answer paper with teacher annotations for questions 4 and 5.</desc>
+  <rect width="900" height="1200" fill="#fffdf8"/>
+  <rect x="54" y="48" width="792" height="1088" rx="8" fill="#fffaf0" stroke="#ddd8ce" stroke-width="2"/>
+  <text x="92" y="94" font-family="Arial, sans-serif" font-size="24" fill="#1f2423" font-weight="700">Class 12 Physics Unit Test</text>
+  <text x="92" y="126" font-family="Arial, sans-serif" font-size="16" fill="#6b716f">Evaluated answer paper - sample page 2</text>
+  <line x1="92" y1="150" x2="808" y2="150" stroke="#ddd8ce" stroke-width="2"/>
+
+  <text x="92" y="198" font-family="Arial, sans-serif" font-size="19" fill="#1f2423" font-weight="700">Q4. Electric field in conductor</text>
+  <text x="92" y="232" font-family="Arial, sans-serif" font-size="19" fill="#313735">The electric field is zero because positive and negative</text>
+  <text x="92" y="263" font-family="Arial, sans-serif" font-size="19" fill="#313735">charges cancel each other inside the sphere.</text>
+  <text x="92" y="294" font-family="Arial, sans-serif" font-size="19" fill="#313735">The charges stay everywhere equally.</text>
+  <path d="M535 245 C610 230, 690 236, 748 260" fill="none" stroke="#b98273" stroke-width="3"/>
+  <text x="584" y="254" font-family="Arial, sans-serif" font-size="20" fill="#9a594d" font-weight="700">Concept unclear</text>
+  <text x="733" y="198" font-family="Arial, sans-serif" font-size="22" fill="#365f5b" font-weight="700">3/10</text>
+
+  <line x1="92" y1="386" x2="808" y2="386" stroke="#ece7dc" stroke-width="2"/>
+  <text x="92" y="490" font-family="Arial, sans-serif" font-size="19" fill="#1f2423" font-weight="700">Q5. Maximum height of projectile</text>
+  <text x="92" y="526" font-family="Arial, sans-serif" font-size="19" fill="#313735">H = u^2 sin^2 theta / 2g.</text>
+  <text x="92" y="558" font-family="Arial, sans-serif" font-size="19" fill="#313735">H = 20^2 x (1/2)^2 / 20</text>
+  <text x="92" y="590" font-family="Arial, sans-serif" font-size="19" fill="#313735">= 400 x 1/4 / 20 = 5 m.</text>
+  <path d="M93 602 C200 624, 357 623, 490 603" fill="none" stroke="#365f5b" stroke-width="3"/>
+  <text x="630" y="582" font-family="Arial, sans-serif" font-size="22" fill="#365f5b" font-weight="700">5/10</text>
+  <text x="92" y="660" font-family="Arial, sans-serif" font-size="18" fill="#6b716f">Formula, substitution, unit and final value are visible.</text>
+
+  <text x="92" y="1060" font-family="Arial, sans-serif" font-size="15" fill="#8a8174">Seeded demonstration image. Review opportunity is evidence-based and not a mark change.</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Evaluated Physics answer paper page 1</title>
+  <desc id="desc">Sample evaluated answer paper with teacher annotations for questions 1 to 3.</desc>
+  <rect width="900" height="1200" fill="#fffdf8"/>
+  <rect x="54" y="48" width="792" height="1088" rx="8" fill="#fffaf0" stroke="#ddd8ce" stroke-width="2"/>
+  <text x="92" y="94" font-family="Arial, sans-serif" font-size="24" fill="#1f2423" font-weight="700">Class 12 Physics Unit Test</text>
+  <text x="92" y="126" font-family="Arial, sans-serif" font-size="16" fill="#6b716f">Evaluated answer paper - sample page 1</text>
+  <line x1="92" y1="150" x2="808" y2="150" stroke="#ddd8ce" stroke-width="2"/>
+
+  <text x="92" y="198" font-family="Arial, sans-serif" font-size="19" fill="#1f2423" font-weight="700">Q1. Projectile motion definition</text>
+  <text x="92" y="232" font-family="Arial, sans-serif" font-size="19" fill="#313735">Projectile motion is motion in two dimensions under gravity.</text>
+  <text x="92" y="263" font-family="Arial, sans-serif" font-size="19" fill="#313735">Horizontal velocity is constant and vertical velocity changes.</text>
+  <path d="M558 248 C610 230, 665 235, 728 260" fill="none" stroke="#b98273" stroke-width="3"/>
+  <text x="590" y="253" font-family="Arial, sans-serif" font-size="20" fill="#9a594d" font-weight="700">Incomplete assumptions</text>
+  <text x="733" y="198" font-family="Arial, sans-serif" font-size="22" fill="#365f5b" font-weight="700">4/6</text>
+
+  <line x1="92" y1="326" x2="808" y2="326" stroke="#ece7dc" stroke-width="2"/>
+  <text x="92" y="386" font-family="Arial, sans-serif" font-size="19" fill="#1f2423" font-weight="700">Q2. Horizontal projection</text>
+  <text x="92" y="422" font-family="Arial, sans-serif" font-size="19" fill="#313735">t = sqrt(2h/g) = sqrt(40/10) = sqrt(4) = 2 s.</text>
+  <text x="92" y="454" font-family="Arial, sans-serif" font-size="19" fill="#313735">Range = u x t = 12 x 3 = 36 m.</text>
+  <path d="M391 464 C485 492, 620 490, 706 461" fill="none" stroke="#b98273" stroke-width="3"/>
+  <text x="612" y="472" font-family="Arial, sans-serif" font-size="20" fill="#9a594d" font-weight="700">Calculation check</text>
+  <text x="733" y="386" font-family="Arial, sans-serif" font-size="22" fill="#365f5b" font-weight="700">5/8</text>
+
+  <line x1="92" y1="548" x2="808" y2="548" stroke="#ece7dc" stroke-width="2"/>
+  <text x="92" y="638" font-family="Arial, sans-serif" font-size="19" fill="#1f2423" font-weight="700">Q3. Centripetal force</text>
+  <text x="92" y="674" font-family="Arial, sans-serif" font-size="19" fill="#313735">a = v^2/r. Hence F = ma = mv^2/r.</text>
+  <text x="92" y="706" font-family="Arial, sans-serif" font-size="19" fill="#313735">It acts towards the centre.</text>
+  <path d="M546 690 C590 682, 628 682, 666 692" fill="none" stroke="#b98273" stroke-width="3"/>
+  <text x="612" y="705" font-family="Arial, sans-serif" font-size="21" fill="#9a594d" font-weight="700">Unit?</text>
+  <text x="733" y="638" font-family="Arial, sans-serif" font-size="22" fill="#365f5b" font-weight="700">5/6</text>
+
+  <text x="92" y="1060" font-family="Arial, sans-serif" font-size="15" fill="#8a8174">Seeded demonstration image. Coordinates are normalized for responsive evidence highlights.</text>
+</svg>

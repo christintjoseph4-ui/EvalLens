@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f5f0;
+  --foreground: #1f2423;
+  --muted: #6b716f;
+  --line: #ddd8ce;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-solid: #fffdf8;
+  --accent: #365f5b;
+  --accent-strong: #244843;
+  --gold: #b58b45;
+  --blue: #466c8d;
+  --sage: #8ba17d;
+  --rose: #b98273;
+  --font-sans: var(--font-inter);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255, 255, 255, 0.92), transparent 28%),
+    linear-gradient(135deg, #f8f6f1 0%, #ece7dc 46%, #f9f7f2 100%);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(54, 95, 91, 0.18);
+}
+
+.glass {
+  background: var(--surface);
+  border: 1px solid rgba(221, 216, 206, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.paper-shadow {
+  box-shadow: 0 24px 70px rgba(58, 52, 40, 0.14);
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: rgba(54, 95, 91, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
