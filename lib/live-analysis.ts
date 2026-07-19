@@ -215,7 +215,7 @@ function extractParsed<T>(value: T | null, code: AnalysisFailureCode): T {
   if (!value) {
     throw new CalmAnalysisError(
       code,
-      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves."
+      "We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now."
     );
   }
 
@@ -408,7 +408,7 @@ export async function analyseUploadedPaper(input: AnalyseFormInput): Promise<Ana
 
     throw new CalmAnalysisError(
       "MODEL_ANALYSIS_FAILED",
-      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves."
+      "We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now."
     );
   }
 }

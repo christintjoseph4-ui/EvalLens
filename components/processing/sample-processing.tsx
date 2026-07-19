@@ -39,7 +39,7 @@ export function SampleProcessing() {
         </span>
         <p className="mt-5 text-center text-sm font-medium text-[#102a56]">Every paper is another step forward.</p>
         <h1 className="mt-3 text-center text-balance text-5xl font-semibold leading-tight">
-          Your improvement plan is almost ready.
+          Your next step is almost ready.
         </h1>
         <div className="mt-9 space-y-3" role="status" aria-live="polite">
           {stages.map((stage, index) => (

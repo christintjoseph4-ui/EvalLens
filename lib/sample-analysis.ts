@@ -14,10 +14,10 @@ const rawSampleAnalysis = {
     potentialScore: 35
   },
   summary: {
-    headline: "There are 13 marks you can still learn from.",
+    headline: "There are 13 marks that can become clearer with practice.",
     supportingMessage:
-      "Your understanding is stronger than the score alone suggests. Completeness, careful calculation, and units are the best places to begin.",
-    nextBestAction: "Spend 25 minutes on Projectile Motion and check the final value twice."
+      "Your understanding is stronger than the score alone suggests. The best place to begin is with complete answers, careful calculations, and units.",
+    nextBestAction: "Spend 25 minutes on Projectile Motion and check the final value once more before you stop."
   },
   learningTwin: {
     conceptMastery: 68,
@@ -49,11 +49,11 @@ const rawSampleAnalysis = {
         "You separated horizontal and vertical motion clearly."
       ],
       improvementOpportunities: [
-        "Add that air resistance is neglected.",
-        "Add that gravity is constant and acts downward."
+        "Add one line saying air resistance is ignored.",
+        "Add one line saying gravity is constant and downward."
       ],
       deductionReason:
-        "The main idea is there. The answer just needs the two assumptions written clearly.",
+        "The main idea is there. Two clear assumptions would make the answer feel complete.",
       evidence: [
         "You wrote that horizontal velocity is constant.",
         "The teacher note asks for the missing assumptions."
@@ -62,7 +62,7 @@ const rawSampleAnalysis = {
       attentionSkills: ["Completeness", "Definition precision"],
       improvementCategory: "Completeness",
       nextAction:
-        "Rewrite this definition once with two clear assumptions, then compare it with the stronger answer.",
+        "Rewrite this definition once with two clear assumptions, then compare it with the stronger version.",
       recoverableMarks: 2,
       evaluationClassification: "consistent",
       mappingConfidence: 0.96,
@@ -98,15 +98,15 @@ const rawSampleAnalysis = {
         }
       ],
       whatWentWell: [
-        "Selected the correct time-of-flight formula.",
-        "Calculated the time of flight correctly as 2 s."
+        "You chose the right time-of-flight formula.",
+        "You found the time of flight correctly as 2 s."
       ],
       improvementOpportunities: [
         "Use the calculated time in the final range step.",
         "Pause for one quick substitution check before writing the final answer."
       ],
       deductionReason:
-        "The method is right. The final range step used 3 s instead of the 2 s you had already found.",
+        "You had the right method. The final range step just needs to use the same 2 s you already found.",
       evidence: [
         "You calculated t = 2 s.",
         "You then wrote Range = 12 x 3 = 36 m.",
@@ -115,7 +115,7 @@ const rawSampleAnalysis = {
       attentionTopics: ["Projectile Motion"],
       attentionSkills: ["Calculation accuracy", "Final substitution check"],
       improvementCategory: "Calculation accuracy",
-      nextAction: "Try three range questions and circle the time value before the final step.",
+      nextAction: "Try three range questions and circle the time value before the final calculation.",
       recoverableMarks: 2,
       evaluationClassification: "consistent",
       mappingConfidence: 0.94,
@@ -156,7 +156,7 @@ const rawSampleAnalysis = {
       ],
       improvementOpportunities: ["Add the SI unit clearly: newton, or N."],
       deductionReason:
-        "The derivation is correct. The only missing piece is the SI unit.",
+        "The derivation is there. The only missing piece is the SI unit.",
       evidence: [
         "You wrote the correct formula F = mv^2/r.",
         "The teacher note asks for the unit."
@@ -207,16 +207,16 @@ const rawSampleAnalysis = {
         "Add that excess charge stays on the outer surface of a conductor."
       ],
       deductionReason:
-        "The final result is right. The explanation needs the electrostatic-equilibrium reason: free charges redistribute.",
+        "You reached the right result. The answer will feel stronger when it explains that free charges redistribute.",
       evidence: [
         "You wrote that charges cancel each other inside the sphere.",
-        "The teacher note says the concept needs to be clearer."
+        "The teacher note is asking for a clearer concept explanation."
       ],
       attentionTopics: ["Electrostatics"],
       attentionSkills: ["Concept understanding", "Scientific explanation"],
       improvementCategory: "Concept understanding",
       nextAction:
-        "Write a three-line explanation using free-charge redistribution.",
+        "Write a three-line explanation using the idea that free charges redistribute.",
       recoverableMarks: 4,
       evaluationClassification: "teacher_discretion",
       mappingConfidence: 0.93,
@@ -260,7 +260,7 @@ const rawSampleAnalysis = {
         "Keep the final answer separate and add one short formula-label line."
       ],
       deductionReason:
-        "The formula, substitution, unit, and final answer are visible. This answer may be worth reviewing together, while the teacher remains the final authority.",
+        "The formula, substitution, unit, and final answer are visible. This may be worth reviewing together with your teacher.",
       evidence: [
         "You wrote H = u^2 sin^2 theta / 2g.",
         "You calculated H = 5 m.",
@@ -270,7 +270,7 @@ const rawSampleAnalysis = {
       attentionSkills: ["Answer structure", "Objective calculation"],
       improvementCategory: "Answer structure",
       nextAction:
-        "Ask the teacher whether the presentation missed any requirement before assuming anything about the marks.",
+        "Ask your teacher whether the presentation missed any requirement before assuming anything about the marks.",
       recoverableMarks: 4,
       evaluationClassification: "objective_review_opportunity",
       mappingConfidence: 0.95,
@@ -292,13 +292,13 @@ const rawSampleAnalysis = {
     {
       topic: "Projectile Motion",
       scorePercentage: 70,
-      status: "A strong foundation with calculation and completeness marks still within reach",
+      status: "A strong foundation, with calculation and completeness still within reach",
       nextAction: "Practise two mixed projectile questions and check the final substitution."
     },
     {
       topic: "Circular Motion",
       scorePercentage: 83,
-      status: "The derivation is strong; units need a final-line habit",
+      status: "The derivation is strong. Units need a final-line habit",
       nextAction: "Add units and direction to the closing line."
     },
     {
@@ -325,7 +325,7 @@ const rawSampleAnalysis = {
     {
       priority: 1,
       topic: "Projectile Motion",
-      reason: "Completeness and final-step checking are the quickest places to improve.",
+      reason: "Complete answers and final-step checks are the gentlest place to begin.",
       action: "Try two horizontal-projection questions and one maximum-height question.",
       durationMinutes: 25,
       practiceQuestions: 3,

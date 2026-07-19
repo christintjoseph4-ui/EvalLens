@@ -54,8 +54,8 @@ export function LiveResultsLoader() {
           {status === "loading" ? "Getting your next step ready" : "Let's use a prepared paper instead."}
         </h1>
         <p className="mt-4 leading-7 text-[#5f6671]">
-          This result only stays in this browser session. You can try the upload again, or
-          explore a prepared paper while support improves.
+          I can&apos;t reopen that paper from here. You can try the upload again, or look at a
+          prepared paper for now.
         </p>
         <Link
           className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"

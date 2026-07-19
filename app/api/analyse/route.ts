@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   } catch {
     return failure(
       "INVALID_UPLOAD",
-      "We couldn't finish reading those uploads yet. You can try again or explore a prepared paper while support improves."
+      "We couldn't finish reading those uploads yet. You can try again, or look at a prepared paper for now."
     );
   }
 
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     console.error("EvalLens analysis failed", { code: "UNEXPECTED_ANALYSIS_ERROR" });
     return failure(
       "ANALYSIS_FAILED",
-      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.",
+      "We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now.",
       502
     );
   }

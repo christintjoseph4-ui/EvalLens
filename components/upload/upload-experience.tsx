@@ -200,7 +200,7 @@ export function UploadExperience() {
 
       const validated = safeValidateAnalysisResult(payload.analysis);
       if (!validated.success) {
-        setError("We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.");
+        setError("We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now.");
         return;
       }
 
@@ -212,7 +212,7 @@ export function UploadExperience() {
       );
       router.push(`/results/live?analysisId=${encodeURIComponent(sessionAnalysis.analysisId)}`);
     } catch {
-      setError("We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.");
+      setError("We couldn't finish reading this paper yet. You can try again, or look at a prepared paper for now.");
     } finally {
       window.clearTimeout(timeoutId);
       setIsProcessing(false);
@@ -377,13 +377,13 @@ export function UploadExperience() {
               onClick={() => void createPlan()}
             >
               <FileText size={18} aria-hidden />
-              {isProcessing ? "Preparing my next step" : "Build my improvement plan"}
+              {isProcessing ? "Preparing my next step" : "Help me find my next step"}
             </button>
             <Link
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-6 py-3.5 font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Understand a Sample Paper
+              See a gentle example
               <ArrowRight size={18} aria-hidden />
             </Link>
           </div>

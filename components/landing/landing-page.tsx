@@ -30,12 +30,12 @@ export function LandingPage() {
             A calmer way to learn from every paper
           </p>
           <h1 className="text-balance max-w-4xl text-5xl font-semibold leading-[0.98] tracking-normal sm:text-7xl lg:text-8xl">
-            Every Evaluation.
-            <span className="block text-[#102a56]">A Better Tomorrow.</span>
+            This paper is not the end.
+            <span className="block text-[#102a56]">It can show the next step.</span>
           </h1>
           <p className="mt-7 max-w-2xl text-xl leading-9 text-[#5f6671]">
-            EvalLens AI transforms evaluated answer papers into personalized learning
-            guidance that helps students, teachers, and parents see the next small step.
+            A marked paper can feel heavy. We will help you understand what happened and what
+            to try next, without making the score feel like the whole story.
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -43,14 +43,14 @@ export function LandingPage() {
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#091b3d]"
               href="/analyse"
             >
-              Start My Learning Journey
+              Help me understand my paper
               <ArrowRight size={18} aria-hidden />
             </Link>
             <Link
               className="focus-ring inline-flex items-center justify-center rounded-full border premium-hairline bg-white/72 px-6 py-3.5 text-base font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Understand a Sample Paper
+              See a gentle example
             </Link>
           </div>
         </div>
@@ -119,10 +119,10 @@ export function LandingPage() {
 
       <section className="mx-auto max-w-6xl pb-16">
         <div className="rounded-[34px] border premium-hairline bg-white/54 p-6 sm:p-8">
-          <p className="text-sm font-medium text-[#6d73d9]">You have already done the hard part.</p>
+          <p className="text-sm font-medium text-[#6d73d9]">You have already faced the hardest part.</p>
           <p className="mt-3 max-w-3xl text-2xl leading-10 text-[#2b3340]">
-            Bring the paper. See what it is trying to teach you. Leave with one clear next
-            step that feels possible today.
+            When you are ready, bring the paper. We will find one clear next step that feels
+            possible today.
           </p>
         </div>
       </section>

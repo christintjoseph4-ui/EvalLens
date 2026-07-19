@@ -34,18 +34,18 @@ const classificationCopy: Record<
 > = {
   consistent: {
     label: "This looks clear",
-    description: "The marks match what is visible on the paper. We can use this answer to plan the next step.",
+    description: "This answer gives us a clear starting point. We can use it to choose the next step.",
     tone: "bg-[#edf8f3] text-[#102a56] border-[#d9efe5]"
   },
   objective_review_opportunity: {
     label: "Worth reviewing together",
-    description: "This answer may benefit from another review. EvalLens has not changed marks.",
+    description: "This answer may be worth another look with your teacher. Your marks stay exactly as your teacher gave them.",
     tone: "bg-[#f4ecd9] text-[#755a2d] border-[#dfcda8]"
   },
   teacher_discretion: {
     label: "Best discussed with your teacher",
     description:
-      "This depends on the evaluator's judgement. We will use it only to guide what to practise next.",
+      "This depends on how your teacher reads the explanation. We can still use it to guide what to practise next.",
     tone: "bg-[#f0f3ff] text-[#4248a0] border-[#dce0ff]"
   }
 };
@@ -193,14 +193,14 @@ function MetricCard({ label, value, helper }: { label: string; value: string; he
 function Overview({ analysis }: { analysis: AnalysisResult }) {
   const metrics = [
     {
-      label: "Where you are now",
+      label: "What this paper shows now",
       value: `${analysis.studentGoal.currentScore}/${analysis.exam.maximumMarks}`,
-      helper: "The score on this paper"
+      helper: "Just this paper, not you"
     },
     {
-      label: "Where you want to go",
+      label: "A goal to work toward",
       value: `${analysis.studentGoal.targetScore ?? analysis.exam.maximumMarks}`,
-      helper: "Your goal for the next attempt"
+      helper: "Only useful if it helps you"
     },
     {
       label: "Marks you can still gain",
@@ -208,9 +208,9 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
       helper: "Places where practice can help"
     },
     {
-      label: "A realistic next score",
+      label: "What feels possible next",
       value: `${analysis.studentGoal.potentialScore}/${analysis.exam.maximumMarks}`,
-      helper: "Grounded in what this paper shows"
+      helper: "Based on this paper, not pressure"
     }
   ];
 
@@ -218,18 +218,17 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
     <section className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-12">
       <div className="grid gap-4 lg:grid-cols-3">
         <article className="glass rounded-[28px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">Where you&apos;ll improve fastest</p>
+          <p className="text-sm font-medium text-[#6d73d9]">Where to begin</p>
           <h2 className="mt-3 text-4xl font-semibold leading-tight">{analysis.summary.headline}</h2>
           <p className="mt-4 leading-7 text-[#5f6671]">{analysis.summary.supportingMessage}</p>
         </article>
         <article className="glass rounded-[28px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">You&apos;re already doing well at</p>
+          <p className="text-sm font-medium text-[#6d73d9]">What is already working</p>
           <h2 className="mt-3 text-4xl font-semibold leading-tight">
             Understanding the main ideas.
           </h2>
           <p className="mt-4 leading-7 text-[#5f6671]">
-            Your paper shows that the foundation is there. A few cleaner final steps can make
-            the answer feel much stronger.
+            The foundation is there. A few calmer final checks can make the answer feel much stronger.
           </p>
         </article>
         <article className="glass rounded-[28px] p-6">
@@ -241,7 +240,7 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
             className="focus-ring mt-6 inline-flex items-center gap-2 rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
             href="#paper"
           >
-            Let&apos;s look together
+            Look with me
             <ArrowRight size={18} aria-hidden />
           </a>
         </article>
@@ -388,7 +387,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
               </h3>
             </div>
             <div className="rounded-2xl border premium-hairline bg-white/70 px-4 py-3 text-center">
-              <p className="text-sm text-[#666d78]">Given marks</p>
+              <p className="text-sm text-[#666d78]">Marks shown</p>
               <p className="text-xl font-semibold">
                 {selectedQuestion.awardedMarks}/{selectedQuestion.maximumMarks}
               </p>
@@ -669,12 +668,12 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
               </h2>
             </div>
             <span className="rounded-full border premium-hairline bg-white/70 px-3 py-1 text-sm text-[#666d78]">
-              {isLive ? "Starting point" : "Prepared path"}
+              {isLive ? "Starting point" : "Example path"}
             </span>
           </div>
           <p className="mt-4 leading-7 text-[#5f6671]">
-            This view is not here to judge the score. It is here to show where the next bit
-            of progress can happen.
+            Use this as a small trail of progress. It is here to show where the next bit of
+            practice can help.
           </p>
           <div className="mt-7 space-y-3">
             {analysis.historicalPreview.map((point, index) => (
@@ -754,8 +753,8 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
               : "Nothing here needs a review conversation."}
           </h2>
           <p className="mt-4 max-w-3xl leading-7 text-[#5f6671]">
-            Review suggestions appear only when the paper gives clear evidence. The teacher&apos;s
-            judgement still matters, and the goal is a calm conversation.
+            We bring this up only when the paper gives clear evidence. Your teacher&apos;s view
+            still matters, and the goal is a calm conversation.
           </p>
         </article>
       </section>
@@ -765,7 +764,7 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
 
 export function ResultsExperience({
   analysis,
-  modeLabel = "Prepared paper",
+  modeLabel = "Example paper",
   isLive = false
 }: {
   analysis: AnalysisResult;
@@ -788,17 +787,17 @@ export function ResultsExperience({
         <div className="glass rounded-[34px] p-7 sm:p-9">
           <p className="text-sm font-medium text-[#6d73d9]">{analysis.exam.subject}</p>
           <h1 className="mt-3 max-w-4xl text-balance text-5xl font-semibold leading-tight sm:text-7xl">
-            Good news. Your paper tells us more than your score does.
+            This score is not the whole story.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5f6671]">
-            Let&apos;s look at the places where a little improvement could make a big difference.
+            Let&apos;s look at what your paper is showing, one answer at a time.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a
               className="focus-ring inline-flex items-center gap-2 rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
               href="#paper"
             >
-              Explore my paper
+              Look at my paper
               <ArrowRight size={18} aria-hidden />
             </a>
             <a
