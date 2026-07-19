@@ -100,7 +100,7 @@ async function prepareFile(file: File | null, slot: UploadSlot, required: boolea
     if (required) {
       throw new CalmAnalysisError(
         "MISSING_REQUIRED_FILE",
-        "Please add both the question paper and evaluated answer paper to continue."
+        "Add the question paper and the evaluated answer paper, then we can begin."
       );
     }
     return undefined;
@@ -110,20 +110,20 @@ async function prepareFile(file: File | null, slot: UploadSlot, required: boolea
   if (!isSupportedUploadType(mimeType) || !isSupportedFileName(file.name)) {
     throw new CalmAnalysisError(
       "UNSUPPORTED_FILE_TYPE",
-      `The ${slotLabels[slot]} must be a PDF, PNG, JPG or JPEG file.`
+      `This ${slotLabels[slot]} is hard for EvalLens to read right now. Please use a PDF, PNG, JPG or JPEG file.`
     );
   }
 
   if (file.size <= 0) {
-    throw new CalmAnalysisError("EMPTY_FILE", `The ${slotLabels[slot]} appears to be empty.`);
+    throw new CalmAnalysisError("EMPTY_FILE", `This ${slotLabels[slot]} looks empty. Please choose the file again.`);
   }
 
   if (file.size > maxUploadFileSizeBytes) {
     throw new CalmAnalysisError(
       "FILE_TOO_LARGE",
-      `The ${slotLabels[slot]} is ${bytesToMegabytes(file.size)} MB. Please upload a file under ${bytesToMegabytes(
+      `The ${slotLabels[slot]} is ${bytesToMegabytes(file.size)} MB. Please choose a file under ${bytesToMegabytes(
         maxUploadFileSizeBytes
-      )} MB.`
+      )} MB so we can read it smoothly.`
     );
   }
 
@@ -132,7 +132,7 @@ async function prepareFile(file: File | null, slot: UploadSlot, required: boolea
   if (pageCount && pageCount > maxUploadPageCount) {
     throw new CalmAnalysisError(
       "TOO_MANY_PAGES",
-      `That ${slotLabels[slot]} appears to have more than ${maxUploadPageCount} pages. Please use a shorter paper for this session.`
+      `That ${slotLabels[slot]} appears to have more than ${maxUploadPageCount} pages. Please use a shorter paper for now.`
     );
   }
 
@@ -154,7 +154,7 @@ function parseTargetScore(value: FormDataEntryValue | null) {
 
   const score = Number(value);
   if (!Number.isFinite(score) || score < 0) {
-    throw new CalmAnalysisError("INVALID_TARGET_SCORE", "Please enter a valid target score.");
+    throw new CalmAnalysisError("INVALID_TARGET_SCORE", "Add a target score that feels realistic for your next attempt.");
   }
 
   return score;
@@ -178,7 +178,7 @@ export async function parseAnalyseFormData(formData: FormData): Promise<AnalyseF
   if (!questionPaper || !evaluatedPaper) {
     throw new CalmAnalysisError(
       "MISSING_REQUIRED_FILE",
-      "Please add both the question paper and evaluated answer paper to continue."
+      "Add the question paper and the evaluated answer paper, then we can begin."
     );
   }
 
@@ -215,7 +215,7 @@ function extractParsed<T>(value: T | null, code: AnalysisFailureCode): T {
   if (!value) {
     throw new CalmAnalysisError(
       code,
-      "We could not complete this upload reliably. Explore the prepared sample to experience the complete EvalLens workflow."
+      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves."
     );
   }
 
@@ -408,7 +408,7 @@ export async function analyseUploadedPaper(input: AnalyseFormInput): Promise<Ana
 
     throw new CalmAnalysisError(
       "MODEL_ANALYSIS_FAILED",
-      "We could not complete this upload reliably. Explore the prepared sample to experience the complete EvalLens workflow."
+      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves."
     );
   }
 }

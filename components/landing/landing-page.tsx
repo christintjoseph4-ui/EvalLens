@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ArrowDown, ArrowRight, FileCheck2, FileText, Flag, Lightbulb, Sparkles } from "lucide-react";
 
 const story = [
-  { label: "Question Paper", icon: FileText },
-  { label: "Teacher Evaluation", icon: FileCheck2 },
-  { label: "Learning Insights", icon: Lightbulb },
-  { label: "Goal Achievement", icon: Flag }
+  { label: "Your paper", icon: FileText },
+  { label: "Teacher notes", icon: FileCheck2 },
+  { label: "What to practise", icon: Lightbulb },
+  { label: "Your next step", icon: Flag }
 ];
 
 export function LandingPage() {
@@ -19,7 +19,7 @@ export function LandingPage() {
           className="focus-ring hidden rounded-full border premium-hairline bg-white/64 px-4 py-2 text-sm text-[#102a56] transition hover:bg-white sm:inline-flex"
           href="/sample"
         >
-          Explore sample
+          See how it feels
         </Link>
       </nav>
 
@@ -27,7 +27,7 @@ export function LandingPage() {
         <div className="soft-enter max-w-4xl">
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border premium-hairline bg-white/70 px-4 py-2 text-sm text-[#666d78]">
             <Sparkles size={15} className="text-[#6d73d9]" aria-hidden />
-            Personalized learning intelligence
+            A calmer way to learn from every paper
           </p>
           <h1 className="text-balance max-w-4xl text-5xl font-semibold leading-[0.98] tracking-normal sm:text-7xl lg:text-8xl">
             Every Evaluation.
@@ -35,7 +35,7 @@ export function LandingPage() {
           </h1>
           <p className="mt-7 max-w-2xl text-xl leading-9 text-[#5f6671]">
             EvalLens AI transforms evaluated answer papers into personalized learning
-            intelligence for students and teachers.
+            guidance that helps students, teachers, and parents see the next small step.
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -50,7 +50,7 @@ export function LandingPage() {
               className="focus-ring inline-flex items-center justify-center rounded-full border premium-hairline bg-white/72 px-6 py-3.5 text-base font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Explore My Paper
+              Understand a Sample Paper
             </Link>
           </div>
         </div>
@@ -60,18 +60,18 @@ export function LandingPage() {
             <div className="rounded-[30px] border premium-hairline bg-white/82 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-[#666d78]">Learning plan</p>
+                  <p className="text-sm text-[#666d78]">Your next step</p>
                   <h2 className="mt-1 text-2xl font-semibold">Projectile Motion</h2>
                 </div>
                 <span className="rounded-full bg-[#edf8f3] px-3 py-1 text-sm text-[#102a56]">
-                  Plan ready
+                  Ready when you are
                 </span>
               </div>
 
               <div className="mt-8 rounded-[26px] border premium-hairline bg-[#fbfaf7] p-5">
                 <div className="mb-4 flex items-center gap-3">
                   <FileText size={20} className="text-[#102a56]" aria-hidden />
-                  <span className="text-sm font-medium text-[#2b3340]">Teacher marked answer</span>
+                  <span className="text-sm font-medium text-[#2b3340]">Teacher-marked answer</span>
                 </div>
                 <div className="space-y-3">
                   <div className="h-3 w-11/12 rounded-full bg-[#dfe5ee]" />
@@ -82,9 +82,9 @@ export function LandingPage() {
               </div>
 
               <div className="mt-5 rounded-[26px] bg-[#102a56] p-5 text-white">
-                <p className="text-sm text-white/68">Today&apos;s focus</p>
+                <p className="text-sm text-white/68">One small step for today</p>
                 <p className="mt-2 text-2xl font-semibold leading-snug">
-                  Recover calculation marks with one cleaner final step.
+                  Check the final value once before moving on.
                 </p>
               </div>
 
@@ -119,10 +119,10 @@ export function LandingPage() {
 
       <section className="mx-auto max-w-6xl pb-16">
         <div className="rounded-[34px] border premium-hairline bg-white/54 p-6 sm:p-8">
-          <p className="text-sm font-medium text-[#6d73d9]">One story, not a dashboard</p>
+          <p className="text-sm font-medium text-[#6d73d9]">You have already done the hard part.</p>
           <p className="mt-3 max-w-3xl text-2xl leading-10 text-[#2b3340]">
-            Upload the paper. Understand the evidence. Leave with one clear next focus,
-            full-mark guidance, and a learning journey that feels possible.
+            Bring the paper. See what it is trying to teach you. Leave with one clear next
+            step that feels possible today.
           </p>
         </div>
       </section>

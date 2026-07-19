@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   } catch {
     return failure(
       "INVALID_UPLOAD",
-      "We could not read those uploads reliably. Please try again or explore the prepared sample."
+      "We couldn't finish reading those uploads yet. You can try again or explore a prepared paper while support improves."
     );
   }
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     if (!isOpenAIConfigured()) {
       throw new CalmAnalysisError(
         "OPENAI_NOT_CONFIGURED",
-        "Live analysis is not configured yet. Explore the prepared sample to experience the complete EvalLens workflow."
+        "We can't read a new paper in this session yet. You can still explore a prepared paper and see how the guidance works."
       );
     }
 
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     console.error("EvalLens analysis failed", { code: "UNEXPECTED_ANALYSIS_ERROR" });
     return failure(
       "ANALYSIS_FAILED",
-      "We could not complete this upload reliably. Explore the prepared sample to experience the complete EvalLens workflow.",
+      "We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.",
       502
     );
   }

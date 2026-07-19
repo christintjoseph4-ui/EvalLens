@@ -41,6 +41,23 @@ input {
   font: inherit;
 }
 
+a,
+button,
+label,
+input {
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+button:active,
+a:active {
+  transform: translateY(1px);
+}
+
+input::placeholder {
+  color: rgba(95, 102, 113, 0.68);
+}
+
 ::selection {
   background: rgba(109, 115, 217, 0.2);
 }

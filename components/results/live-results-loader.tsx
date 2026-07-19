@@ -41,27 +41,27 @@ export function LiveResultsLoader() {
   }, []);
 
   if (analysis) {
-    return <ResultsExperience analysis={analysis} modeLabel="Live analysis" isLive />;
+    return <ResultsExperience analysis={analysis} modeLabel="Your paper" isLive />;
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center px-5 py-10">
       <section className="glass paper-shadow w-full max-w-xl rounded-[36px] p-8 text-center">
         <p className="text-sm font-medium text-[#6d73d9]">
-          {status === "loading" ? "Opening your analysis" : "Analysis not available"}
+          {status === "loading" ? "Opening your paper" : "We can't find that paper here"}
         </p>
         <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">
-          {status === "loading" ? "Preparing your result" : "Open the prepared paper"}
+          {status === "loading" ? "Getting your next step ready" : "Let's use a prepared paper instead."}
         </h1>
         <p className="mt-4 leading-7 text-[#5f6671]">
-          Live results are kept only in this browser session. If the session is missing,
-          the prepared sample remains available.
+          This result only stays in this browser session. You can try the upload again, or
+          explore a prepared paper while support improves.
         </p>
         <Link
           className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
           href="/sample"
         >
-          Explore the prepared paper
+          Understand a prepared paper
         </Link>
       </section>
     </main>

@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const stages = [
-  "Understanding the questions",
-  "Understanding teacher feedback",
-  "Building learning intelligence",
-  "Preparing your improvement plan"
+  "Reading the paper...",
+  "Understanding the teacher's notes...",
+  "Finding the best place to begin...",
+  "Preparing the next learning steps..."
 ];
 
 export function SampleProcessing() {
@@ -37,9 +37,9 @@ export function SampleProcessing() {
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
           <Sparkles size={22} aria-hidden />
         </span>
-        <p className="mt-5 text-center text-sm font-medium text-[#102a56]">Prepared sample experience</p>
+        <p className="mt-5 text-center text-sm font-medium text-[#102a56]">Every paper is another step forward.</p>
         <h1 className="mt-3 text-center text-balance text-5xl font-semibold leading-tight">
-          Your improvement plan is forming
+          Your improvement plan is almost ready.
         </h1>
         <div className="mt-9 space-y-3" role="status" aria-live="polite">
           {stages.map((stage, index) => (
@@ -66,7 +66,7 @@ export function SampleProcessing() {
           className="focus-ring mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
           href="/results/sample-physics-projectile-motion"
         >
-          View sample now
+          See the next step
           <ArrowRight size={18} aria-hidden />
         </Link>
       </section>

@@ -14,10 +14,10 @@ const rawSampleAnalysis = {
     potentialScore: 35
   },
   summary: {
-    headline: "You are 13 recoverable marks closer to your goal.",
+    headline: "There are 13 marks you can still learn from.",
     supportingMessage:
-      "Your conceptual understanding is stronger than the current score suggests. The highest-impact improvements are completeness, numerical accuracy, and units.",
-    nextBestAction: "Spend 25 minutes revising Projectile Motion with two calculation checks."
+      "Your understanding is stronger than the score alone suggests. Completeness, careful calculation, and units are the best places to begin.",
+    nextBestAction: "Spend 25 minutes on Projectile Motion and check the final value twice."
   },
   learningTwin: {
     conceptMastery: 68,
@@ -39,30 +39,30 @@ const rawSampleAnalysis = {
         "Projectile motion is motion in two dimensions under gravity. The horizontal velocity is constant and vertical velocity changes due to gravity.",
       teacherAnnotations: [
         {
-          text: "Incomplete assumptions",
+          text: "Add the assumptions",
           page: 1,
           region: { x: 0.62, y: 0.2, width: 0.22, height: 0.05 }
         }
       ],
       whatWentWell: [
-        "Identified two-dimensional motion under gravity.",
-        "Correctly separated horizontal and vertical components."
+        "You identified motion in two dimensions under gravity.",
+        "You separated horizontal and vertical motion clearly."
       ],
       improvementOpportunities: [
-        "State that air resistance is neglected.",
-        "Mention that acceleration due to gravity is constant and downward."
+        "Add that air resistance is neglected.",
+        "Add that gravity is constant and acts downward."
       ],
       deductionReason:
-        "The answer gives the core idea but does not fully state two assumptions required by the question.",
+        "The main idea is there. The answer just needs the two assumptions written clearly.",
       evidence: [
-        "Student wrote: horizontal velocity is constant.",
-        "Teacher annotation says: Incomplete assumptions."
+        "You wrote that horizontal velocity is constant.",
+        "The teacher note asks for the missing assumptions."
       ],
       attentionTopics: ["Projectile Motion"],
       attentionSkills: ["Completeness", "Definition precision"],
       improvementCategory: "Completeness",
       nextAction:
-        "Rewrite this definition with two explicit assumptions, then compare it with the full-mark answer.",
+        "Rewrite this definition once with two clear assumptions, then compare it with the stronger answer.",
       recoverableMarks: 2,
       evaluationClassification: "consistent",
       mappingConfidence: 0.96,
@@ -102,20 +102,20 @@ const rawSampleAnalysis = {
         "Calculated the time of flight correctly as 2 s."
       ],
       improvementOpportunities: [
-        "Use the calculated time consistently in the range step.",
-        "Add a quick final substitution check before writing the answer."
+        "Use the calculated time in the final range step.",
+        "Pause for one quick substitution check before writing the final answer."
       ],
       deductionReason:
-        "The method is correct, but the final range uses 3 s instead of the calculated 2 s.",
+        "The method is right. The final range step used 3 s instead of the 2 s you had already found.",
       evidence: [
-        "Student calculated t = 2 s.",
-        "Student then wrote Range = 12 x 3 = 36 m.",
-        "Teacher annotation points to the range calculation."
+        "You calculated t = 2 s.",
+        "You then wrote Range = 12 x 3 = 36 m.",
+        "The teacher note points to the range calculation."
       ],
       attentionTopics: ["Projectile Motion"],
       attentionSkills: ["Calculation accuracy", "Final substitution check"],
       improvementCategory: "Calculation accuracy",
-      nextAction: "Redo three range questions and circle the value substituted in the final step.",
+      nextAction: "Try three range questions and circle the time value before the final step.",
       recoverableMarks: 2,
       evaluationClassification: "consistent",
       mappingConfidence: 0.94,
@@ -151,20 +151,20 @@ const rawSampleAnalysis = {
         }
       ],
       whatWentWell: [
-        "Derived the expression F = mv^2/r correctly.",
-        "Mentioned that the force acts towards the centre."
+        "You derived F = mv^2/r correctly.",
+        "You wrote that the force acts towards the centre."
       ],
-      improvementOpportunities: ["Add the SI unit clearly: newton or N."],
+      improvementOpportunities: ["Add the SI unit clearly: newton, or N."],
       deductionReason:
-        "The derivation is correct, but the requested SI unit was not written.",
+        "The derivation is correct. The only missing piece is the SI unit.",
       evidence: [
-        "Student wrote the correct formula F = mv^2/r.",
-        "Teacher annotation asks: Unit?"
+        "You wrote the correct formula F = mv^2/r.",
+        "The teacher note asks for the unit."
       ],
       attentionTopics: ["Circular Motion"],
       attentionSkills: ["Units and notation"],
       improvementCategory: "Units and notation",
-      nextAction: "Add units to the final line of every numerical or derivation answer.",
+      nextAction: "Add a unit check to the final line of every numerical or derivation answer.",
       recoverableMarks: 1,
       evaluationClassification: "consistent",
       mappingConfidence: 0.95,
@@ -200,23 +200,23 @@ const rawSampleAnalysis = {
         }
       ],
       whatWentWell: [
-        "Recognised that the field inside the conductor is zero in the stated condition."
+        "You recognised that the field inside the conductor is zero in this condition."
       ],
       improvementOpportunities: [
-        "Explain that free charges redistribute until internal electric field becomes zero.",
-        "State that excess charge resides on the outer surface of a conductor."
+        "Explain that free charges move until the internal electric field becomes zero.",
+        "Add that excess charge stays on the outer surface of a conductor."
       ],
       deductionReason:
-        "The answer gives the final result but explains it using charge cancellation, which is not the correct electrostatic-equilibrium reasoning.",
+        "The final result is right. The explanation needs the electrostatic-equilibrium reason: free charges redistribute.",
       evidence: [
-        "Student wrote: charges cancel each other inside the sphere.",
-        "Teacher annotation says: Concept unclear."
+        "You wrote that charges cancel each other inside the sphere.",
+        "The teacher note says the concept needs to be clearer."
       ],
       attentionTopics: ["Electrostatics"],
       attentionSkills: ["Concept understanding", "Scientific explanation"],
       improvementCategory: "Concept understanding",
       nextAction:
-        "Review conductor equilibrium and write a three-line explanation using free-charge redistribution.",
+        "Write a three-line explanation using free-charge redistribution.",
       recoverableMarks: 4,
       evaluationClassification: "teacher_discretion",
       mappingConfidence: 0.93,
@@ -252,25 +252,25 @@ const rawSampleAnalysis = {
         }
       ],
       whatWentWell: [
-        "Used the correct maximum-height formula.",
-        "Substituted sin 30 degrees correctly as 1/2.",
-        "Arrived at the objective numerical answer of 5 m."
+        "You used the correct maximum-height formula.",
+        "You substituted sin 30 degrees correctly as 1/2.",
+        "You reached the numerical answer of 5 m."
       ],
       improvementOpportunities: [
-        "Keep the final answer visually separate and include one short formula-label line."
+        "Keep the final answer separate and add one short formula-label line."
       ],
       deductionReason:
-        "The paper evidence shows the formula, substitution, unit, and final answer. The awarded mark may be lower than expected for this objective calculation, but the teacher remains the final authority.",
+        "The formula, substitution, unit, and final answer are visible. This answer may be worth reviewing together, while the teacher remains the final authority.",
       evidence: [
-        "Student wrote H = u^2 sin^2 theta / 2g.",
-        "Student calculated H = 5 m.",
+        "You wrote H = u^2 sin^2 theta / 2g.",
+        "You calculated H = 5 m.",
         "The question asks for the formula and calculation."
       ],
       attentionTopics: ["Projectile Motion"],
       attentionSkills: ["Answer structure", "Objective calculation"],
       improvementCategory: "Answer structure",
       nextAction:
-        "Ask the teacher whether the answer presentation missed any rubric requirement before assuming a mark change.",
+        "Ask the teacher whether the presentation missed any requirement before assuming anything about the marks.",
       recoverableMarks: 4,
       evaluationClassification: "objective_review_opportunity",
       mappingConfidence: 0.95,
@@ -292,19 +292,19 @@ const rawSampleAnalysis = {
     {
       topic: "Projectile Motion",
       scorePercentage: 70,
-      status: "Strong foundation with recoverable calculation and completeness marks",
-      nextAction: "Practice two mixed projectile questions and check final substitutions."
+      status: "A strong foundation with calculation and completeness marks still within reach",
+      nextAction: "Practise two mixed projectile questions and check the final substitution."
     },
     {
       topic: "Circular Motion",
       scorePercentage: 83,
-      status: "Secure derivation; unit notation needs a final-line habit",
+      status: "The derivation is strong; units need a final-line habit",
       nextAction: "Add units and direction to the closing line."
     },
     {
       topic: "Electrostatics",
       scorePercentage: 30,
-      status: "Current development area",
+      status: "The best place to practise next",
       nextAction: "Revise conductor equilibrium using charge redistribution."
     }
   ],
@@ -314,7 +314,7 @@ const rawSampleAnalysis = {
       reason:
         "The formula, substitution, unit, and final numerical answer are visible in the evaluated answer.",
       evidence: [
-        "Correct formula is written.",
+        "The correct formula is written.",
         "sin 30 degrees is substituted as 1/2.",
         "Final answer is 5 m."
       ],
@@ -325,48 +325,48 @@ const rawSampleAnalysis = {
     {
       priority: 1,
       topic: "Projectile Motion",
-      reason: "Several recoverable marks come from completeness and final-step checking.",
-      action: "Solve two horizontal-projection questions and one maximum-height question.",
+      reason: "Completeness and final-step checking are the quickest places to improve.",
+      action: "Try two horizontal-projection questions and one maximum-height question.",
       durationMinutes: 25,
       practiceQuestions: 3,
-      expectedBenefit: "Recover calculation and presentation marks without relearning the full chapter."
+      expectedBenefit: "Gain confidence without relearning the whole chapter."
     },
     {
       priority: 2,
       topic: "Electrostatics",
-      reason: "The largest conceptual gap appears in conductor equilibrium.",
-      action: "Write a three-line explanation, then teach it aloud once.",
+      reason: "Conductor equilibrium is the concept that will help most next.",
+      action: "Write a three-line explanation, then say it aloud once.",
       durationMinutes: 18,
       practiceQuestions: 2,
-      expectedBenefit: "Improve explanation quality on theory questions."
+      expectedBenefit: "Make theory answers clearer and easier to trust."
     },
     {
       priority: 3,
       topic: "Units and notation",
-      reason: "One mark was recoverable by adding the requested SI unit.",
+      reason: "One answer only needed the requested SI unit.",
       action: "Add a final unit-and-direction check to every answer.",
       durationMinutes: 7,
       practiceQuestions: 5,
-      expectedBenefit: "Build a low-effort habit that protects easy marks."
+      expectedBenefit: "Build a small habit that protects easy marks."
     }
   ],
   historicalPreview: [
     {
-      testName: "Sample Test 1",
+      testName: "First paper",
       score: 16,
       conceptMastery: 52,
       numericalAccuracy: 48,
       answerCompleteness: 45
     },
     {
-      testName: "Sample Test 2",
+      testName: "Next paper",
       score: 19,
       conceptMastery: 61,
       numericalAccuracy: 50,
       answerCompleteness: 54
     },
     {
-      testName: "Sample Test 3",
+      testName: "This paper",
       score: 22,
       conceptMastery: 68,
       numericalAccuracy: 54,

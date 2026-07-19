@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "EvalLens AI",
   description:
-    "A calm, evidence-based learning intelligence experience for evaluated answer papers."
+    "A calm learning companion that helps students understand what to improve after every paper."
 };
 
 export default function RootLayout({

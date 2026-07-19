@@ -19,8 +19,8 @@ function buildGroundedAnswer(prompt: string, question: AnalysisQuestion) {
 
   if (normalizedPrompt.includes("review")) {
     return question.evaluationClassification === "objective_review_opportunity"
-      ? "The visible formula, substitution, unit, and final value support a potential review conversation. This is not a mark change."
-      : "The visible evidence does not create a strong objective review signal for this question.";
+      ? "This answer may be worth reviewing together because the formula, substitution, unit, and final value are visible. This is not a mark change."
+      : "This answer does not need a review conversation from the visible evidence. It can stay in the practice plan.";
   }
 
   if (normalizedPrompt.includes("full-mark")) {
@@ -50,8 +50,8 @@ function buildDeterministicResponse(prompt: string, question: AnalysisQuestion) 
     answer: buildGroundedAnswer(prompt, question),
     evidence: [
       `Question: ${question.questionText}`,
-      `Student answer: ${question.studentAnswer}`,
-      `Awarded marks: ${question.awardedMarks}/${question.maximumMarks}`,
+      `What you wrote: ${question.studentAnswer}`,
+      `Marks shown on the paper: ${question.awardedMarks}/${question.maximumMarks}`,
       ...question.evidence
     ],
     classification,
@@ -65,19 +65,19 @@ export async function POST(request: Request) {
   try {
     payload = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid paper question." }, { status: 400 });
+    return NextResponse.json({ error: "I couldn't read that question yet." }, { status: 400 });
   }
 
   const parsed = requestSchema.safeParse(payload);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid paper question." }, { status: 400 });
+    return NextResponse.json({ error: "I couldn't read that question yet." }, { status: 400 });
   }
 
   const question = parsed.data.question ?? getSampleQuestion(parsed.data.questionId);
 
   if (!question) {
-    return NextResponse.json({ error: "Question not found." }, { status: 404 });
+    return NextResponse.json({ error: "I couldn't find that answer in this paper." }, { status: 404 });
   }
 
   if (isOpenAIConfigured()) {

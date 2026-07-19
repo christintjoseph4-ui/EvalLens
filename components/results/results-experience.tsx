@@ -33,19 +33,19 @@ const classificationCopy: Record<
   { label: string; description: string; tone: string }
 > = {
   consistent: {
-    label: "Consistent evaluation",
-    description: "The awarded marks align with the visible evidence and expected rubric areas.",
+    label: "This looks clear",
+    description: "The marks match what is visible on the paper. We can use this answer to plan the next step.",
     tone: "bg-[#edf8f3] text-[#102a56] border-[#d9efe5]"
   },
   objective_review_opportunity: {
-    label: "Potential review opportunity",
-    description: "This response may benefit from a second review. EvalLens has not changed marks.",
+    label: "Worth reviewing together",
+    description: "This answer may benefit from another review. EvalLens has not changed marks.",
     tone: "bg-[#f4ecd9] text-[#755a2d] border-[#dfcda8]"
   },
   teacher_discretion: {
-    label: "Teacher discretion",
+    label: "Best discussed with your teacher",
     description:
-      "This area depends on evaluator discretion. EvalLens has used it only to identify future learning priorities.",
+      "This depends on the evaluator's judgement. We will use it only to guide what to practise next.",
     tone: "bg-[#f0f3ff] text-[#4248a0] border-[#dce0ff]"
   }
 };
@@ -54,18 +54,18 @@ const promptGroups = [
   {
     label: "Understand",
     prompts: [
-      "Why was this answer incomplete?",
-      "What exactly was missing?",
-      "Explain the teacher's comment."
+      "What was missing here?",
+      "Can you explain this simply?",
+      "What does the teacher's note mean?"
     ]
   },
   {
     label: "Improve",
-    prompts: ["Show me a full-mark answer.", "Teach this concept in two minutes."]
+    prompts: ["Show me a stronger answer.", "Teach me this concept."]
   },
   {
     label: "Practice",
-    prompts: ["Give me two similar questions.", "Could this answer benefit from teacher review?"]
+    prompts: ["Give me two similar questions.", "Is this worth reviewing together?"]
   }
 ];
 
@@ -99,6 +99,18 @@ function getModeSummary(question: AnalysisQuestion, mode: string) {
   return question.deductionReason;
 }
 
+function responseSourceLabel(classification: AskResponse["classification"]) {
+  if (classification === "teacher_discretion") {
+    return "Best discussed with your teacher";
+  }
+
+  if (classification === "inference") {
+    return "A careful reading of the evidence";
+  }
+
+  return "Directly from the paper";
+}
+
 function EvidenceOverlay({ question }: { question: AnalysisQuestion }) {
   const annotationRegions = question.teacherAnnotations
     .map((annotation) => annotation.region)
@@ -110,14 +122,14 @@ function EvidenceOverlay({ question }: { question: AnalysisQuestion }) {
   if (!canRenderImage) {
     return (
       <div className="rounded-[28px] border premium-hairline bg-white/76 p-6">
-        <p className="text-sm font-medium text-[#6d73d9]">Evidence preview</p>
-        <h3 className="mt-2 text-2xl font-semibold">Text evidence is ready</h3>
+        <p className="text-sm font-medium text-[#6d73d9]">What we could read</p>
+        <h3 className="mt-2 text-2xl font-semibold">The answer text is ready.</h3>
         <p className="mt-3 leading-7 text-[#5f6671]">
-          EvalLens read the uploaded document. For this session, the paper view uses the
-          extracted answer and evidence notes for this question.
+          We could read the answer and notes for this question. The paper image preview is not
+          available in this session.
         </p>
         <div className="mt-5 rounded-2xl border premium-hairline bg-[#f8f9fc] p-4">
-          <p className="text-sm font-semibold">Student answer evidence</p>
+          <p className="text-sm font-semibold">What you wrote</p>
           <p className="mt-2 text-sm leading-6 text-[#5f6671]">{question.studentAnswer}</p>
         </div>
       </div>
@@ -181,24 +193,24 @@ function MetricCard({ label, value, helper }: { label: string; value: string; he
 function Overview({ analysis }: { analysis: AnalysisResult }) {
   const metrics = [
     {
-      label: "Current score",
+      label: "Where you are now",
       value: `${analysis.studentGoal.currentScore}/${analysis.exam.maximumMarks}`,
-      helper: "Teacher-awarded score"
+      helper: "The score on this paper"
     },
     {
-      label: "Target score",
+      label: "Where you want to go",
       value: `${analysis.studentGoal.targetScore ?? analysis.exam.maximumMarks}`,
-      helper: "Student goal for the next attempt"
+      helper: "Your goal for the next attempt"
     },
     {
-      label: "Recoverable marks",
+      label: "Marks you can still gain",
       value: `${analysis.studentGoal.recoverableMarks}`,
-      helper: "Evidence-based improvement opportunity"
+      helper: "Places where practice can help"
     },
     {
-      label: "Potential score",
+      label: "A realistic next score",
       value: `${analysis.studentGoal.potentialScore}/${analysis.exam.maximumMarks}`,
-      helper: "A grounded goal within this paper"
+      helper: "Grounded in what this paper shows"
     }
   ];
 
@@ -206,22 +218,22 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
     <section className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-12">
       <div className="grid gap-4 lg:grid-cols-3">
         <article className="glass rounded-[28px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">Biggest Opportunity</p>
+          <p className="text-sm font-medium text-[#6d73d9]">Where you&apos;ll improve fastest</p>
           <h2 className="mt-3 text-4xl font-semibold leading-tight">{analysis.summary.headline}</h2>
           <p className="mt-4 leading-7 text-[#5f6671]">{analysis.summary.supportingMessage}</p>
         </article>
         <article className="glass rounded-[28px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">Strong Foundation</p>
+          <p className="text-sm font-medium text-[#6d73d9]">You&apos;re already doing well at</p>
           <h2 className="mt-3 text-4xl font-semibold leading-tight">
-            Conceptual understanding is improving.
+            Understanding the main ideas.
           </h2>
           <p className="mt-4 leading-7 text-[#5f6671]">
-            The sample history shows steady growth across three evaluations, with numerical
-            accuracy still the highest-impact development area.
+            Your paper shows that the foundation is there. A few cleaner final steps can make
+            the answer feel much stronger.
           </p>
         </article>
         <article className="glass rounded-[28px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">Today&apos;s Focus</p>
+          <p className="text-sm font-medium text-[#6d73d9]">One small step for today</p>
           <h2 className="mt-3 text-4xl font-semibold leading-tight">
             {analysis.summary.nextBestAction}
           </h2>
@@ -229,7 +241,7 @@ function Overview({ analysis }: { analysis: AnalysisResult }) {
             className="focus-ring mt-6 inline-flex items-center gap-2 rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
             href="#paper"
           >
-            Explore my paper
+            Let&apos;s look together
             <ArrowRight size={18} aria-hidden />
           </a>
         </article>
@@ -270,9 +282,9 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
     <section className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12" id="paper">
       <div className="mb-5 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
         <div>
-          <p className="text-sm font-medium text-[#6d73d9]">Question Explorer</p>
+          <p className="text-sm font-medium text-[#6d73d9]">Look at one answer at a time</p>
           <h2 className="mt-2 text-balance text-5xl font-semibold leading-tight">
-            Evidence first. Guidance that feels human.
+            Let&apos;s see what this answer is showing us.
           </h2>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -300,7 +312,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
         <div className="glass rounded-[30px] p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm text-[#666d78]">Original evaluated answer paper</p>
+              <p className="text-sm text-[#666d78]">Your marked paper</p>
               <p className="font-medium">Page {selectedQuestion.teacherAnnotations[0]?.page ?? 1}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -345,7 +357,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
               onClick={() => go(-1)}
             >
               <ChevronLeft size={16} aria-hidden />
-              Previous
+              Previous answer
             </button>
             <button
               className="focus-ring inline-flex items-center gap-2 rounded-full border premium-hairline bg-white/68 px-4 py-2 text-sm disabled:opacity-40"
@@ -353,7 +365,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
               disabled={selectedIndex === analysis.questions.length - 1}
               onClick={() => go(1)}
             >
-              Next
+              Next answer
               <ChevronRight size={16} aria-hidden />
             </button>
           </div>
@@ -376,7 +388,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
               </h3>
             </div>
             <div className="rounded-2xl border premium-hairline bg-white/70 px-4 py-3 text-center">
-              <p className="text-sm text-[#666d78]">Marks</p>
+              <p className="text-sm text-[#666d78]">Given marks</p>
               <p className="text-xl font-semibold">
                 {selectedQuestion.awardedMarks}/{selectedQuestion.maximumMarks}
               </p>
@@ -392,7 +404,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
             <div className="rounded-2xl bg-white/62 p-4">
               <h4 className="flex items-center gap-2 font-semibold">
                 <CheckCircle2 size={18} className="text-[#102a56]" aria-hidden />
-                What went well
+                What you did well
               </h4>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-[#5f6671]">
                 {selectedQuestion.whatWentWell.map((item) => (
@@ -403,7 +415,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
             <div className="rounded-2xl bg-white/62 p-4">
               <h4 className="flex items-center gap-2 font-semibold">
                 <Target size={18} className="text-[#6d73d9]" aria-hidden />
-                Could strengthen
+                Something worth practising
               </h4>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-[#5f6671]">
                 {selectedQuestion.improvementOpportunities.map((item) => (
@@ -414,7 +426,7 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
           </div>
 
           <div className="mt-5 rounded-2xl bg-white/76 p-4">
-            <h4 className="font-semibold">Relevant evidence</h4>
+            <h4 className="font-semibold">What the paper shows</h4>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-[#5f6671]">
               {selectedQuestion.evidence.map((item) => (
                 <li key={item}>{item}</li>
@@ -424,11 +436,11 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <p className="rounded-2xl bg-[#f8f9fc] p-4 text-sm leading-6">
-              <span className="block font-semibold text-[#1f2423]">Topic</span>
+              <span className="block font-semibold text-[#1f2423]">This belongs to</span>
               {selectedQuestion.topic}
             </p>
             <p className="rounded-2xl bg-[#f8f9fc] p-4 text-sm leading-6">
-              <span className="block font-semibold text-[#1f2423]">Next action</span>
+              <span className="block font-semibold text-[#1f2423]">Try this next</span>
               {selectedQuestion.nextAction}
             </p>
           </div>
@@ -436,10 +448,10 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
           <div className="mt-5 flex flex-wrap gap-2">
             {[
               ["deduction", "What affected this answer?"],
-              ["full-mark", "Show a full-mark answer"],
-              ["teach", "Teach this concept"],
+              ["full-mark", "Show a stronger answer"],
+              ["teach", "Teach me this concept"],
               ["practice", "Give me a similar question"],
-              ["review", "Could this benefit from review?"]
+              ["review", "Is this worth reviewing together?"]
             ].map(([id, label]) => (
               <button
                 className={`focus-ring rounded-full px-4 py-2 text-sm font-medium ${
@@ -459,14 +471,14 @@ function QuestionExplorer({ analysis }: { analysis: AnalysisResult }) {
           <div className="mt-5 rounded-2xl border border-[#ded8ce] bg-white/72 p-4">
             <p className="text-sm font-semibold text-[#6d73d9]">
               {mode === "deduction"
-                ? "Likely reason"
+                ? "What to notice"
                 : mode === "full-mark"
-                  ? "Full-mark answer guidance"
+                  ? "A stronger answer could look like"
                   : mode === "teach"
-                    ? "Two-minute concept"
+                    ? "A simple way to understand it"
                     : mode === "practice"
-                      ? "Similar practice"
-                      : "Review boundary"}
+                      ? "Try a nearby question"
+                      : "How to talk about it"}
             </p>
             <p className="mt-2 leading-7 text-[#2b3340]">{getModeSummary(selectedQuestion, mode)}</p>
           </div>
@@ -506,7 +518,7 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
       const payload = (await result.json()) as { response: AskResponse };
       setResponse(payload.response);
     } catch {
-      setError("I could not answer that reliably from this question context. Try a suggested prompt.");
+      setError("I couldn't answer that clearly from this question yet.");
     } finally {
       setIsLoading(false);
     }
@@ -516,7 +528,7 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
     <section className="mt-6 rounded-[28px] border premium-hairline bg-white/78 p-4">
       <h4 className="flex items-center gap-2 text-lg font-semibold">
         <MessageCircle size={19} className="text-[#102a56]" aria-hidden />
-        Ask My Paper
+        Ask your paper
       </h4>
       <div className="mt-5 grid gap-4">
         {promptGroups.map((group) => (
@@ -546,6 +558,7 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
         <input
           id="paper-question"
           className="focus-ring min-w-0 flex-1 rounded-full border premium-hairline bg-white px-4 py-3 text-sm"
+          placeholder="Ask anything about this answer..."
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
         />
@@ -559,8 +572,12 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
           <Search size={18} aria-hidden />
         </button>
       </div>
-      {isLoading ? <p className="mt-4 text-sm text-[#666d78]">Grounding the answer in this question...</p> : null}
-      {error ? <p className="mt-4 text-sm text-[#7a4e43]">{error}</p> : null}
+      {isLoading ? <p className="mt-4 text-sm text-[#666d78]">Reading this answer carefully...</p> : null}
+      {error ? (
+        <p className="mt-4 text-sm text-[#7a4e43]">
+          I couldn&apos;t answer that clearly from this question yet. Try one of the prompts above.
+        </p>
+      ) : null}
       {response ? (
         <motion.div
           className="mt-5 space-y-4 rounded-[24px] border premium-hairline bg-[#fbfaf7] p-4 text-sm leading-6"
@@ -569,7 +586,7 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
           transition={{ duration: 0.24, ease: "easeOut" }}
         >
           <div>
-            <p className="font-semibold">Direct evidence</p>
+            <p className="font-semibold">What I can point to</p>
             <ul className="mt-1 space-y-1 text-[#5f6671]">
               {response.evidence.map((item) => (
                 <li key={item}>{item}</li>
@@ -577,15 +594,15 @@ function AskMyPaper({ question }: { question: AnalysisQuestion }) {
             </ul>
           </div>
           <p>
-            <span className="font-semibold">Answer: </span>
+            <span className="font-semibold">Here&apos;s the answer: </span>
             <span className="text-[#5f6671]">{response.answer}</span>
           </p>
           <p>
-            <span className="font-semibold">Classification: </span>
-            <span className="text-[#5f6671]">{response.classification.replaceAll("_", " ")}</span>
+            <span className="font-semibold">How confident this is: </span>
+            <span className="text-[#5f6671]">{responseSourceLabel(response.classification)}</span>
           </p>
           <p>
-            <span className="font-semibold">Next step: </span>
+            <span className="font-semibold">Next small step: </span>
             <span className="text-[#5f6671]">{response.nextAction}</span>
           </p>
         </motion.div>
@@ -620,15 +637,15 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12">
       <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="glass rounded-[34px] p-6">
-          <p className="text-sm font-medium text-[#6d73d9]">Revision Plan</p>
-          <h2 className="mt-2 text-4xl font-semibold">Today, tomorrow, this week.</h2>
+          <p className="text-sm font-medium text-[#6d73d9]">Your next practice steps</p>
+          <h2 className="mt-2 text-4xl font-semibold">Start small. Keep going.</h2>
           <div className="mt-6 space-y-3">
             {analysis.revisionPlan.map((item, index) => (
               <article className="rounded-[28px] border premium-hairline bg-white/70 p-5" key={item.priority}>
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-semibold">
-                      {index === 0 ? "Today's Goal" : index === 1 ? "Tomorrow" : "This Week"} - {item.topic}
+                      {index === 0 ? "Start here" : index === 1 ? "Next" : "Keep going"} - {item.topic}
                     </p>
                     <p className="mt-1 text-sm leading-6 text-[#5f6671]">{item.reason}</p>
                   </div>
@@ -646,18 +663,18 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
         <div className="glass rounded-[34px] p-6">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
             <div>
-              <p className="text-sm font-medium text-[#6d73d9]">Learning Journey</p>
+              <p className="text-sm font-medium text-[#6d73d9]">Your progress</p>
               <h2 className="mt-2 text-4xl font-semibold">
-                {isLive ? "Learning history preview" : "Prepared learning path"}
+                {isLive ? "The path is starting to appear" : "Small improvements add up."}
               </h2>
             </div>
             <span className="rounded-full border premium-hairline bg-white/70 px-3 py-1 text-sm text-[#666d78]">
-              {isLive ? "Preview" : "Prepared path"}
+              {isLive ? "Starting point" : "Prepared path"}
             </span>
           </div>
           <p className="mt-4 leading-7 text-[#5f6671]">
-            Your conceptual understanding has improved across three evaluations. Numerical
-            accuracy remains your highest-impact development area.
+            This view is not here to judge the score. It is here to show where the next bit
+            of progress can happen.
           </p>
           <div className="mt-7 space-y-3">
             {analysis.historicalPreview.map((point, index) => (
@@ -672,7 +689,7 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
                     </span>
                     <div>
                       <p className="text-sm font-medium text-[#6d73d9]">
-                        {index === 0 ? "Current" : index === 1 ? "Next" : "Goal"}
+                        {index === 0 ? "Started here" : index === 1 ? "Built on it" : "Now"}
                       </p>
                       <h3 className="mt-1 text-xl font-semibold">{point.testName}</h3>
                     </div>
@@ -683,10 +700,10 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2 text-sm text-[#5f6671]">
                   <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
-                    Concept {percent(point.conceptMastery)}
+                    Ideas {percent(point.conceptMastery)}
                   </span>
                   <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
-                    Accuracy {percent(point.numericalAccuracy)}
+                    Calculations {percent(point.numericalAccuracy)}
                   </span>
                   <span className="rounded-full bg-[#f8f9fc] px-3 py-1">
                     Completeness {percent(point.answerCompleteness)}
@@ -700,29 +717,29 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
 
       <section className="mt-5">
         <div className="mb-5">
-          <p className="text-sm font-medium text-[#6d73d9]">Learning Twin</p>
-          <h2 className="mt-2 text-4xl font-semibold">A learner profile, not just statistics.</h2>
+          <p className="text-sm font-medium text-[#6d73d9]">What this paper helps us understand</p>
+          <h2 className="mt-2 text-4xl font-semibold">You are more than the score.</h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <CircularMetric
-            label="Concept Mastery"
+            label="You understand concepts well."
             value={analysis.learningTwin.conceptMastery}
-            helper="Understands the core idea"
+            helper="This is something to build on."
           />
           <CircularMetric
-            label="Numerical Accuracy"
+            label="Calculations are getting steadier."
             value={analysis.learningTwin.numericalAccuracy}
-            helper="Needs the sharpest practice"
+            helper="A few careful checks can help here."
           />
           <CircularMetric
-            label="Presentation"
+            label="Your explanations are becoming clearer."
             value={analysis.learningTwin.presentation}
-            helper="Shows work clearly"
+            helper="Keep making the steps easy to follow."
           />
           <CircularMetric
-            label="Learning Confidence"
+            label="Complete answers are within reach."
             value={analysis.learningTwin.answerCompleteness}
-            helper="Can complete stronger answers"
+            helper="Small additions can change the whole answer."
           />
         </div>
       </section>
@@ -730,13 +747,15 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
       <section className="mt-5">
         <article className="glass rounded-[34px] p-6 sm:p-8">
           <ClipboardCheck className="text-[#102a56]" size={24} aria-hidden />
-          <p className="mt-5 text-sm font-medium text-[#6d73d9]">Review Opportunity</p>
+          <p className="mt-5 text-sm font-medium text-[#6d73d9]">Worth reviewing together</p>
           <h2 className="mt-2 max-w-3xl text-4xl font-semibold leading-tight">
-            {reviewCount > 0 ? `${reviewCount} objective case to discuss.` : "No objective review signal."}
+            {reviewCount > 0
+              ? `${reviewCount} ${reviewCount === 1 ? "answer" : "answers"} may be worth discussing.`
+              : "Nothing here needs a review conversation."}
           </h2>
           <p className="mt-4 max-w-3xl leading-7 text-[#5f6671]">
-            Potential review opportunities are shown only when objective evidence is strong.
-            Teacher authority remains protected, and subjective answers stay in the learning lane.
+            Review suggestions appear only when the paper gives clear evidence. The teacher&apos;s
+            judgement still matters, and the goal is a calm conversation.
           </p>
         </article>
       </section>
@@ -746,7 +765,7 @@ function RevisionAndJourney({ analysis, isLive }: { analysis: AnalysisResult; is
 
 export function ResultsExperience({
   analysis,
-  modeLabel = "Evidence-based sample",
+  modeLabel = "Prepared paper",
   isLive = false
 }: {
   analysis: AnalysisResult;
@@ -769,12 +788,10 @@ export function ResultsExperience({
         <div className="glass rounded-[34px] p-7 sm:p-9">
           <p className="text-sm font-medium text-[#6d73d9]">{analysis.exam.subject}</p>
           <h1 className="mt-3 max-w-4xl text-balance text-5xl font-semibold leading-tight sm:text-7xl">
-            Your paper has a next step.
+            Good news. Your paper tells us more than your score does.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5f6671]">
-            {isLive
-              ? "This live analysis was created from the uploaded papers in this browser session. EvalLens connects visible evidence, awarded marks, and next actions without overriding the evaluator."
-              : "This prepared Physics paper shows how EvalLens connects marks, teacher annotations, student work, and next actions without overriding the evaluator."}
+            Let&apos;s look at the places where a little improvement could make a big difference.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a
@@ -789,7 +806,7 @@ export function ResultsExperience({
               href="#journey"
             >
               <BookOpen size={18} aria-hidden />
-              View learning journey
+              View my progress
             </a>
           </div>
         </div>
@@ -804,13 +821,12 @@ export function ResultsExperience({
       <footer className="mx-auto max-w-7xl px-5 pb-10 pt-3 text-sm leading-6 text-[#666d78] sm:px-8 lg:px-12">
         <div className="flex flex-col gap-3 rounded-3xl border premium-hairline bg-white/54 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            {isLive
-              ? "Every conclusion shown here is tied to extracted paper evidence. Keep the original paper nearby for teacher review conversations."
-              : "Every conclusion shown here is tied to prepared paper evidence. Upload your own paper to generate the same evidence-led view."}
+            Every evaluation is another opportunity to grow. We&apos;ll be ready whenever you bring
+            your next paper.
           </p>
           <span className="inline-flex items-center gap-2 text-[#102a56]">
             <Sparkles size={16} aria-hidden />
-            Teachers evaluate. EvalLens interprets.
+            Learning is not finished yet.
           </span>
         </div>
       </footer>

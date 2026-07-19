@@ -50,33 +50,33 @@ const slots: Array<{
     id: "questionPaper",
     label: "Question paper",
     required: true,
-    helper: "PDF, JPG, JPEG or PNG"
+    helper: "The questions you were answering"
   },
   {
     id: "evaluatedPaper",
     label: "Evaluated answer paper",
     required: true,
-    helper: "Include teacher marks and annotations"
+    helper: "The paper with marks and teacher notes"
   },
   {
     id: "answerKey",
     label: "Answer key",
     required: false,
-    helper: "Optional"
+    helper: "Helpful if you have it"
   },
   {
     id: "markingScheme",
     label: "Marking scheme",
     required: false,
-    helper: "Optional"
+    helper: "Helpful if your teacher shared one"
   }
 ];
 
 const processingMessages = [
-  "Understanding the questions",
-  "Understanding teacher feedback",
-  "Building learning intelligence",
-  "Preparing your improvement plan"
+  "Reading your paper...",
+  "Understanding your teacher's notes...",
+  "Finding the most useful insights...",
+  "Preparing your next step..."
 ];
 
 function isSupportedFile(file: File) {
@@ -125,15 +125,15 @@ export function UploadExperience() {
   function updateFile(slot: UploadSlot, file: File | null) {
     setError("");
     if (file && !isSupportedFile(file)) {
-      setError(`Please upload a ${acceptedFormats} file.`);
+      setError(`This file type is hard for EvalLens to read right now. Please use ${acceptedFormats}.`);
       return;
     }
 
     if (file && file.size > maxUploadFileSizeBytes) {
       setError(
-        `That file is ${bytesToMegabytes(file.size)} MB. Please upload a file under ${bytesToMegabytes(
+        `This file is ${bytesToMegabytes(file.size)} MB. Please choose a file under ${bytesToMegabytes(
           maxUploadFileSizeBytes
-        )} MB.`
+        )} MB so we can read it smoothly.`
       );
       return;
     }
@@ -150,13 +150,13 @@ export function UploadExperience() {
     }
 
     if (!uploads.questionPaper || !uploads.evaluatedPaper) {
-      setError("Please add both the question paper and evaluated answer paper to continue.");
+      setError("Add the question paper and the evaluated answer paper, then we can begin.");
       return;
     }
 
     const targetScoreValue = targetScore.trim() ? Number(targetScore) : undefined;
     if (targetScoreValue !== undefined && (!Number.isFinite(targetScoreValue) || targetScoreValue < 0)) {
-      setError("Please enter a valid target score.");
+      setError("Add a target score that feels realistic for your next attempt.");
       return;
     }
 
@@ -200,7 +200,7 @@ export function UploadExperience() {
 
       const validated = safeValidateAnalysisResult(payload.analysis);
       if (!validated.success) {
-        setError("This paper needs a more careful read. You can still explore the prepared sample.");
+        setError("We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.");
         return;
       }
 
@@ -212,7 +212,7 @@ export function UploadExperience() {
       );
       router.push(`/results/live?analysisId=${encodeURIComponent(sessionAnalysis.analysisId)}`);
     } catch {
-      setError("This upload needs another try. You can still explore the prepared sample.");
+      setError("We couldn't finish reading this paper yet. You can try again or explore a prepared paper while support improves.");
     } finally {
       window.clearTimeout(timeoutId);
       setIsProcessing(false);
@@ -226,8 +226,8 @@ export function UploadExperience() {
           <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
             <Sparkles size={22} aria-hidden />
           </span>
-          <p className="mt-5 text-sm font-medium text-[#102a56]">Building your improvement plan</p>
-          <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Reading the paper with care</h1>
+          <p className="mt-5 text-sm font-medium text-[#102a56]">You&apos;ve already done the hard part.</p>
+          <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Understanding your answers...</h1>
           <div className="mt-9 space-y-3 text-left" role="status" aria-live="polite">
             {processingMessages.map((message, index) => (
               <div
@@ -243,14 +243,13 @@ export function UploadExperience() {
             ))}
           </div>
           <p className="mt-6 text-sm leading-6 text-[#666d78]">
-            EvalLens is reading the paper and teacher feedback. If this upload needs more care,
-            the prepared sample remains available.
+            We are reading the paper gently and looking for the best place to begin.
           </p>
           {error ? (
             <div className="mt-5 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
               <p>{error}</p>
               <Link className="mt-3 inline-flex font-medium text-[#102a56]" href="/sample">
-                Explore the prepared sample
+                Explore a prepared paper
               </Link>
             </div>
           ) : null}
@@ -266,25 +265,24 @@ export function UploadExperience() {
           EvalLens AI
         </Link>
         <Link className="focus-ring rounded-full text-sm text-[#102a56]" href="/sample">
-          Try sample
+          See an example
         </Link>
       </nav>
 
       <section className="mx-auto grid max-w-6xl gap-10 py-12 lg:grid-cols-[0.82fr_1.18fr]">
         <div className="lg:pt-8">
-          <p className="text-sm font-medium text-[#6d73d9]">Start My Learning Journey</p>
+          <p className="text-sm font-medium text-[#6d73d9]">Let&apos;s understand your paper</p>
           <h1 className="mt-4 text-balance text-5xl font-semibold leading-[1.02] sm:text-6xl">
-            Your evaluated paper becomes a learning journey.
+            Your paper can show you what to do next.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-[#5f6671]">
-            Add the evaluated paper and related exam material. EvalLens will turn the evidence
-            into a calm plan for what to do next.
+            Add the paper and the teacher-marked answer sheet. We&apos;ll help you find the
+            small changes that can make the biggest difference.
           </p>
           <div className="mt-7 flex max-w-xl gap-3 rounded-[26px] border premium-hairline bg-white/62 p-4 text-sm leading-6 text-[#5f6671]">
             <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={18} aria-hidden />
             <p>
-              Your papers are processed to create this analysis. Avoid uploading documents
-              containing unnecessary personal information.
+              Keep anything private out of the upload if it is not needed for understanding the paper.
             </p>
           </div>
         </div>
@@ -302,7 +300,7 @@ export function UploadExperience() {
                   <span className="text-lg font-semibold">{slot.label}</span>
                   {slot.required ? (
                     <span className="text-xs uppercase tracking-[0.12em] text-[#6d73d9]">
-                      Required
+                      Needed
                     </span>
                   ) : null}
                 </span>
@@ -314,7 +312,7 @@ export function UploadExperience() {
                 >
                   <UploadCloud size={25} className="text-[#102a56]" aria-hidden />
                   <span className="mt-3 max-w-full truncate text-sm text-[#2b3340]">
-                    {uploads[slot.id]?.name ?? "Choose file"}
+                    {uploads[slot.id]?.name ?? "Choose a file"}
                   </span>
                 </span>
                 <input
@@ -341,7 +339,7 @@ export function UploadExperience() {
             <label className="rounded-[30px] border premium-hairline bg-white/70 p-5">
               <span className="flex items-center gap-2 text-lg font-semibold">
                 <Target size={18} aria-hidden />
-                Target score
+                Goal for next time
               </span>
               <input
                 className="focus-ring mt-4 w-full rounded-2xl border premium-hairline bg-[#fffefb] px-4 py-3"
@@ -379,13 +377,13 @@ export function UploadExperience() {
               onClick={() => void createPlan()}
             >
               <FileText size={18} aria-hidden />
-              {isProcessing ? "Building my improvement plan" : "Build my improvement plan"}
+              {isProcessing ? "Preparing my next step" : "Build my improvement plan"}
             </button>
             <Link
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-6 py-3.5 font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
-              Try Sample Experience
+              Understand a Sample Paper
               <ArrowRight size={18} aria-hidden />
             </Link>
           </div>
