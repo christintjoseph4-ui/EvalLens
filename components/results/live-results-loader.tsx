@@ -46,19 +46,19 @@ export function LiveResultsLoader() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-5 py-10">
-      <section className="glass paper-shadow w-full max-w-xl rounded-[32px] p-8 text-center">
-        <p className="text-sm font-medium text-[#365f5b]">
+      <section className="glass paper-shadow w-full max-w-xl rounded-[36px] p-8 text-center">
+        <p className="text-sm font-medium text-[#6d73d9]">
           {status === "loading" ? "Opening your analysis" : "Analysis not available"}
         </p>
-        <h1 className="mt-3 text-4xl font-semibold">
+        <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">
           {status === "loading" ? "Preparing your result" : "Use the sample workflow"}
         </h1>
-        <p className="mt-4 leading-7 text-[#626966]">
+        <p className="mt-4 leading-7 text-[#5f6671]">
           Live results are kept only in this browser session for the hackathon demo. If the
           session is missing, the prepared sample remains available.
         </p>
         <Link
-          className="focus-ring mt-6 inline-flex rounded-full bg-[#365f5b] px-5 py-3 font-medium text-white"
+          className="focus-ring mt-6 inline-flex rounded-full bg-[#102a56] px-5 py-3 font-medium text-white"
           href="/sample"
         >
           Try the sample experience

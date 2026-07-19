@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { ArrowRight, CalendarDays, FileText, Target, UploadCloud } from "lucide-react";
+import { ArrowRight, CalendarDays, FileText, Shield, Sparkles, Target, UploadCloud } from "lucide-react";
 import {
   bytesToMegabytes,
   formatSupportedUploadTypes,
@@ -224,31 +224,34 @@ export function UploadExperience() {
   if (isProcessing) {
     return (
       <main className="flex min-h-screen items-center justify-center px-5 py-10">
-        <section className="glass paper-shadow w-full max-w-2xl rounded-[32px] p-8 text-center">
-          <p className="text-sm font-medium text-[#365f5b]">Creating your improvement plan</p>
-          <h1 className="mt-3 text-4xl font-semibold">Reading the paper with care</h1>
-          <div className="mt-8 space-y-3 text-left">
+        <section className="glass paper-shadow w-full max-w-2xl rounded-[36px] p-8 text-center sm:p-10">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#eef1ff] text-[#6d73d9]">
+            <Sparkles size={22} aria-hidden />
+          </span>
+          <p className="mt-5 text-sm font-medium text-[#102a56]">Creating your improvement plan</p>
+          <h1 className="mt-3 text-balance text-5xl font-semibold leading-tight">Reading the paper with care</h1>
+          <div className="mt-9 space-y-3 text-left">
             {processingMessages.map((message, index) => (
               <div
-                className="flex items-center gap-3 rounded-2xl border border-[#e3ded3] bg-white/62 px-4 py-3"
+                className="flex items-center gap-3 rounded-[22px] border premium-hairline bg-white/70 px-4 py-3"
                 key={message}
               >
                 <span
-                  className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#365f5b]"
+                  className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#6d73d9]"
                   style={{ animationDelay: `${index * 180}ms` }}
                 />
-                <span className="text-[#4f5754]">{message}</span>
+                <span className="text-[#2b3340]">{message}</span>
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm leading-6 text-[#6b716f]">
+          <p className="mt-6 text-sm leading-6 text-[#666d78]">
             Live analysis is running on the server. If the upload cannot be read reliably,
             the prepared sample remains available.
           </p>
           {error ? (
             <div className="mt-5 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
               <p>{error}</p>
-              <Link className="mt-3 inline-flex font-medium text-[#365f5b]" href="/sample">
+              <Link className="mt-3 inline-flex font-medium text-[#102a56]" href="/sample">
                 Explore the prepared sample
               </Link>
             </div>
@@ -264,46 +267,51 @@ export function UploadExperience() {
         <Link className="focus-ring rounded-full text-lg font-semibold" href="/">
           EvalLens AI
         </Link>
-        <Link className="focus-ring rounded-full text-sm text-[#365f5b]" href="/sample">
+        <Link className="focus-ring rounded-full text-sm text-[#102a56]" href="/sample">
           Try sample
         </Link>
       </nav>
 
-      <section className="mx-auto grid max-w-6xl gap-8 py-10 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p className="text-sm font-medium text-[#365f5b]">Analyse an evaluated paper</p>
-          <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl">
-            Create my improvement plan
+      <section className="mx-auto grid max-w-6xl gap-10 py-12 lg:grid-cols-[0.82fr_1.18fr]">
+        <div className="lg:pt-8">
+          <p className="text-sm font-medium text-[#6d73d9]">Analyse My Paper</p>
+          <h1 className="mt-4 text-balance text-5xl font-semibold leading-[1.02] sm:text-6xl">
+            Your evaluated paper becomes a learning journey.
           </h1>
-          <p className="mt-4 max-w-xl leading-7 text-[#626966]">
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[#5f6671]">
             Add the evaluated paper and related exam material. Live analysis uses the server-side
             OpenAI pipeline; the prepared sample stays available for a reliable demo.
           </p>
-          <p className="mt-4 max-w-xl rounded-2xl border border-[#ddd8ce] bg-white/58 px-4 py-3 text-sm leading-6 text-[#626966]">
-            Your papers are processed to create this analysis. Avoid uploading documents
-            containing unnecessary personal information.
-          </p>
+          <div className="mt-7 flex max-w-xl gap-3 rounded-[26px] border premium-hairline bg-white/62 p-4 text-sm leading-6 text-[#5f6671]">
+            <Shield className="mt-0.5 shrink-0 text-[#102a56]" size={18} aria-hidden />
+            <p>
+              Your papers are processed to create this analysis. Avoid uploading documents
+              containing unnecessary personal information.
+            </p>
+          </div>
         </div>
 
-        <div className="glass rounded-[28px] p-4 sm:p-6">
+        <div>
           <div className="grid gap-4 md:grid-cols-2">
             {slots.map((slot) => (
               <label
-                className="focus-within:ring-2 focus-within:ring-[#365f5b]/40 rounded-3xl border border-[#e2dcd0] bg-white/64 p-5"
+                className={`focus-within:ring-2 focus-within:ring-[#6d73d9]/35 rounded-[30px] border premium-hairline bg-white/70 p-5 transition hover:bg-white ${
+                  slot.required ? "md:min-h-64" : ""
+                }`}
                 key={slot.id}
               >
                 <span className="flex items-center justify-between gap-3">
-                  <span className="font-medium">{slot.label}</span>
+                  <span className="text-lg font-semibold">{slot.label}</span>
                   {slot.required ? (
-                    <span className="text-xs uppercase tracking-[0.12em] text-[#8b6d3f]">
+                    <span className="text-xs uppercase tracking-[0.12em] text-[#6d73d9]">
                       Required
                     </span>
                   ) : null}
                 </span>
-                <span className="mt-2 block text-sm text-[#6b716f]">{slot.helper}</span>
-                <span className="mt-5 flex min-h-24 flex-col items-center justify-center rounded-2xl border border-dashed border-[#cfc8ba] bg-[#faf7f0] px-4 py-5 text-center">
-                  <UploadCloud size={24} className="text-[#365f5b]" aria-hidden />
-                  <span className="mt-3 max-w-full truncate text-sm text-[#4f5754]">
+                <span className="mt-2 block text-sm text-[#666d78]">{slot.helper}</span>
+                <span className="mt-6 flex min-h-32 flex-col items-center justify-center rounded-[26px] border border-dashed border-[#ccd3df] bg-[#f8f9fc] px-4 py-6 text-center">
+                  <UploadCloud size={25} className="text-[#102a56]" aria-hidden />
+                  <span className="mt-3 max-w-full truncate text-sm text-[#2b3340]">
                     {uploads[slot.id]?.name ?? "Choose file"}
                   </span>
                 </span>
@@ -319,35 +327,35 @@ export function UploadExperience() {
           </div>
 
           <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <label className="rounded-3xl border border-[#e2dcd0] bg-white/64 p-5 md:col-span-2">
-              <span className="font-medium">Subject</span>
+            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5 md:col-span-2">
+              <span className="text-lg font-semibold">Subject</span>
               <input
-                className="focus-ring mt-4 w-full rounded-2xl border border-[#d9d2c5] bg-[#fffdf8] px-4 py-3"
+                className="focus-ring mt-4 w-full rounded-2xl border premium-hairline bg-[#fffefb] px-4 py-3"
                 type="text"
                 value={subject}
                 onChange={(event) => setSubject(event.target.value)}
               />
             </label>
-            <label className="rounded-3xl border border-[#e2dcd0] bg-white/64 p-5">
-              <span className="flex items-center gap-2 font-medium">
+            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5">
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <Target size={18} aria-hidden />
                 Target score
               </span>
               <input
-                className="focus-ring mt-4 w-full rounded-2xl border border-[#d9d2c5] bg-[#fffdf8] px-4 py-3"
+                className="focus-ring mt-4 w-full rounded-2xl border premium-hairline bg-[#fffefb] px-4 py-3"
                 type="number"
                 min="0"
                 value={targetScore}
                 onChange={(event) => setTargetScore(event.target.value)}
               />
             </label>
-            <label className="rounded-3xl border border-[#e2dcd0] bg-white/64 p-5">
-              <span className="flex items-center gap-2 font-medium">
+            <label className="rounded-[30px] border premium-hairline bg-white/70 p-5">
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <CalendarDays size={18} aria-hidden />
                 Exam date
               </span>
               <input
-                className="focus-ring mt-4 w-full rounded-2xl border border-[#d9d2c5] bg-[#fffdf8] px-4 py-3"
+                className="focus-ring mt-4 w-full rounded-2xl border premium-hairline bg-[#fffefb] px-4 py-3"
                 type="date"
                 value={examDate}
                 onChange={(event) => setExamDate(event.target.value)}
@@ -363,7 +371,7 @@ export function UploadExperience() {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
-              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#365f5b] px-6 py-3 font-medium text-white transition hover:bg-[#244843] disabled:cursor-not-allowed disabled:opacity-55"
+              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-6 py-3.5 font-medium text-white transition hover:bg-[#091b3d] disabled:cursor-not-allowed disabled:opacity-55"
               type="button"
               disabled={isProcessing}
               onClick={() => void createPlan()}
@@ -372,7 +380,7 @@ export function UploadExperience() {
               {isProcessing ? "Creating my improvement plan" : "Create my improvement plan"}
             </button>
             <Link
-              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border border-[#cfc8ba] bg-white/70 px-6 py-3 font-medium text-[#244843] transition hover:bg-white"
+              className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-6 py-3.5 font-medium text-[#102a56] transition hover:bg-white"
               href="/sample"
             >
               Try the sample experience
