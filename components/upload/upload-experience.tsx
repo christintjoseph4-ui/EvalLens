@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, CalendarDays, FileText, Shield, Sparkles, Target } from "lucide-react";
 import { FileUploadCard } from "@/components/upload/file-upload-card";
 import {
@@ -20,6 +20,17 @@ type UploadSlot = "questionPaper" | "evaluatedPaper" | "answerKey" | "markingSch
 type UploadState = Record<UploadSlot, File | null>;
 type PreviewState = Record<UploadSlot, string | null>;
 type UploadErrors = Record<UploadSlot, string>;
+type AiAvailability =
+  | { status: "checking" }
+  | { status: "configured" }
+  | { status: "unavailable"; message: string }
+  | { status: "failed"; message: string };
+
+type AiStatusResponse = {
+  configured: boolean;
+  provider: "OpenAI";
+  modelConfigured: boolean;
+};
 
 type AnalyseResponse =
   | {
@@ -99,6 +110,11 @@ const processingMessages = [
   "Building your improvement plan..."
 ];
 
+const unavailableMessage =
+  "We can't read a new paper in this session yet. You can still explore a prepared paper and see how the guidance works.";
+const statusCheckFailedMessage = "We couldn't check whether paper reading is ready. Please try again.";
+const modelUnavailableMessage = "Paper reading is not fully ready on this deployment yet. Please try again shortly.";
+
 function isSupportedFile(file: File) {
   return isSupportedFileName(file.name) && (!file.type || isSupportedUploadType(file.type));
 }
@@ -115,6 +131,7 @@ export function UploadExperience() {
   const [subject, setSubject] = useState("Physics");
   const [error, setError] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [aiAvailability, setAiAvailability] = useState<AiAvailability>({ status: "checking" });
 
   const acceptedFormats = useMemo(() => formatSupportedUploadTypes(), []);
   const acceptValue = ".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp";
@@ -126,6 +143,77 @@ export function UploadExperience() {
           URL.revokeObjectURL(url);
         }
       });
+    };
+  }, []);
+
+  const checkAiAvailability = useCallback(async (showChecking = true) => {
+    if (showChecking) {
+      setAiAvailability({ status: "checking" });
+    }
+
+    try {
+      const response = await fetch("/api/ai-status", {
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("AI status check failed.");
+      }
+
+      const status = (await response.json()) as AiStatusResponse;
+      if (status.configured && status.modelConfigured && status.provider === "OpenAI") {
+        setAiAvailability({ status: "configured" });
+        return;
+      }
+
+      setAiAvailability({
+        status: "unavailable",
+        message: status.configured ? modelUnavailableMessage : unavailableMessage
+      });
+    } catch {
+      setAiAvailability({
+        status: "failed",
+        message: statusCheckFailedMessage
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    let isActive = true;
+
+    fetch("/api/ai-status", { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("AI status check failed.");
+        }
+        return response.json() as Promise<AiStatusResponse>;
+      })
+      .then((status) => {
+        if (!isActive) {
+          return;
+        }
+
+        if (status.configured && status.modelConfigured && status.provider === "OpenAI") {
+          setAiAvailability({ status: "configured" });
+          return;
+        }
+
+        setAiAvailability({
+          status: "unavailable",
+          message: status.configured ? modelUnavailableMessage : unavailableMessage
+        });
+      })
+      .catch(() => {
+        if (isActive) {
+          setAiAvailability({
+            status: "failed",
+            message: statusCheckFailedMessage
+          });
+        }
+      });
+
+    return () => {
+      isActive = false;
     };
   }, []);
 
@@ -216,6 +304,21 @@ export function UploadExperience() {
       return;
     }
 
+    if (aiAvailability.status === "checking") {
+      setError("Checking whether paper reading is ready. Please wait a moment.");
+      return;
+    }
+
+    if (aiAvailability.status === "failed") {
+      setError(aiAvailability.message);
+      return;
+    }
+
+    if (aiAvailability.status !== "configured") {
+      setError(aiAvailability.message);
+      return;
+    }
+
     if (!uploads.questionPaper || !uploads.evaluatedPaper) {
       setError("Add the question paper and the evaluated answer paper, then we can begin.");
       return;
@@ -286,6 +389,11 @@ export function UploadExperience() {
       setIsProcessing(false);
     }
   }
+
+  const canSubmit =
+    Boolean(uploads.questionPaper && uploads.evaluatedPaper) &&
+    aiAvailability.status === "configured" &&
+    !isProcessing;
 
   if (isProcessing) {
     return (
@@ -425,15 +533,47 @@ export function UploadExperience() {
             </div>
           ) : null}
 
+          {aiAvailability.status === "checking" ? (
+            <p className="mt-4 rounded-2xl border premium-hairline bg-white/62 px-4 py-3 text-sm text-[#666d78]" role="status">
+              Checking whether paper reading is ready...
+            </p>
+          ) : null}
+
+          {aiAvailability.status === "unavailable" ? (
+            <div className="mt-4 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
+              <p>{aiAvailability.message}</p>
+              <Link className="mt-3 inline-flex font-medium text-[#102a56]" href="/sample">
+                Explore a prepared paper
+              </Link>
+            </div>
+          ) : null}
+
+          {aiAvailability.status === "failed" ? (
+            <div className="mt-4 rounded-2xl border border-[#e5d4c8] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4e43]">
+              <p>{aiAvailability.message}</p>
+              <button
+                className="focus-ring mt-3 rounded-full bg-white/70 px-3 py-1.5 text-xs font-medium text-[#102a56] transition hover:bg-white"
+                type="button"
+                onClick={() => void checkAiAvailability()}
+              >
+                Check again
+              </button>
+            </div>
+          ) : null}
+
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full bg-[#102a56] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#091b3d] disabled:cursor-not-allowed disabled:opacity-55"
               type="button"
-              disabled={isProcessing}
+              disabled={!canSubmit}
               onClick={() => void createPlan()}
             >
               <FileText size={17} aria-hidden />
-              {isProcessing ? "Preparing my next step" : "Help me find my next step"}
+              {isProcessing
+                ? "Preparing my next step"
+                : aiAvailability.status === "checking"
+                  ? "Checking paper reading"
+                  : "Help me find my next step"}
             </button>
             <Link
               className="focus-ring inline-flex items-center justify-center gap-2 rounded-full border premium-hairline bg-white/72 px-5 py-3 text-sm font-medium text-[#102a56] transition hover:bg-white/90"

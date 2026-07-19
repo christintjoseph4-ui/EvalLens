@@ -353,6 +353,10 @@ describe("upload preview storage", () => {
 
     expect(uploadExperience).toContain("URL.createObjectURL(file)");
     expect(uploadExperience).toContain("URL.revokeObjectURL");
+    expect(uploadExperience).toContain('fetch("/api/ai-status"');
+    expect(uploadExperience).toContain('status.configured && status.modelConfigured && status.provider === "OpenAI"');
+    expect(uploadExperience).toContain("status.configured ? modelUnavailableMessage : unavailableMessage");
+    expect(uploadExperience).toContain('aiAvailability.status === "configured"');
     expect(uploadExperience).toContain('formData.set("questionPaper", uploads.questionPaper)');
     expect(uploadExperience).toContain('formData.set("evaluatedAnswerPaper", uploads.evaluatedPaper)');
     expect(uploadExperience).not.toContain("FileReader");
